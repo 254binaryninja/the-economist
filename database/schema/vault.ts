@@ -28,3 +28,4 @@ export const vaultRelations =  relations(vault,({one,many})=>({
     vaultDocuments:many(vaultDocuments),
     vaultWorkflows:many(vaultWorkflows),
 }))
+

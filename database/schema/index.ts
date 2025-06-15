@@ -5,6 +5,7 @@ import { vault,vaultRelations } from "./vault";
 import { vaultDocuments,vaultDocumentsRelations } from "./documents.vault";
 import { vaultMessages,vaultMessagesRelations } from "./messages.vault";
 import { vaultWorkflows,vaultWorkflowsRelations } from "./workflows.vault";
+import { vaultDocumentChunks,vaultDocumentChunksRelations } from "./documentChunks.vault";
 
 
 export {
@@ -21,5 +22,7 @@ export {
     vaultMessages,
     vaultMessagesRelations,
     vaultWorkflows,
-    vaultWorkflowsRelations
+    vaultWorkflowsRelations,
+    vaultDocumentChunks,
+    vaultDocumentChunksRelations
 }

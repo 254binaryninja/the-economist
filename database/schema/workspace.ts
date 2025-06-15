@@ -24,6 +24,3 @@ export const workspaceRelations = relations(workspace,({one,many})=>({
     }),
     workspaceMessage:many(workspaceMessage)
 }))
-
-// Types 
-// export const workspaceInsertSchema = createInsertSchema(workspace)

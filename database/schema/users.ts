@@ -1,6 +1,5 @@
 import { relations, sql } from "drizzle-orm"
 import * as p from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
 import { randomUUID } from "node:crypto";
 import { z } from "zod"
 import { vault } from "./vault";
@@ -27,10 +26,6 @@ export const usersRelations = relations(users,({many})=>({
     workspace:many(workspace)
 }))
 
-// const userInsertSchema = createInsertSchema(users)
-
-
-// export type UserSchema = z.infer<typeof userInsertSchema>
 
 
 
