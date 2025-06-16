@@ -170,26 +170,26 @@ export type Database = {
           created_at: string | null
           id: string
           role: string
-          workspace_id: string
+          vault_id: string
         }
         Insert: {
           content: string
           created_at?: string | null
           id: string
           role: string
-          workspace_id: string
+          vault_id: string
         }
         Update: {
           content?: string
           created_at?: string | null
           id?: string
           role?: string
-          workspace_id?: string
+          vault_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "vault_messages_workspace_id_vault_id_fk"
-            columns: ["workspace_id"]
+            foreignKeyName: "vault_messages_vault_id_vault_id_fk"
+            columns: ["vault_id"]
             isOneToOne: false
             referencedRelation: "vault"
             referencedColumns: ["id"]
@@ -203,7 +203,7 @@ export type Database = {
           feedback: string | null
           id: string
           role: string
-          workspace_id: string
+          vault_id: string
         }
         Insert: {
           content: Json
@@ -211,7 +211,7 @@ export type Database = {
           feedback?: string | null
           id: string
           role: string
-          workspace_id: string
+          vault_id: string
         }
         Update: {
           content?: Json
@@ -219,12 +219,12 @@ export type Database = {
           feedback?: string | null
           id?: string
           role?: string
-          workspace_id?: string
+          vault_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "vault_workflows_workspace_id_vault_id_fk"
-            columns: ["workspace_id"]
+            foreignKeyName: "vault_workflows_vault_id_vault_id_fk"
+            columns: ["vault_id"]
             isOneToOne: false
             referencedRelation: "vault"
             referencedColumns: ["id"]
