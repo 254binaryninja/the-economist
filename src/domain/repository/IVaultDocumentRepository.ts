@@ -1,8 +1,8 @@
 import { Tables,TablesInsert,TablesUpdate } from "@/types/database";
 
-export type VaultDocumentInsert = TablesInsert<'vault_document_chunks'>;
-export type VaultDocument = Tables<'vault_document_chunks'>;
-export type VaultDocumentUpdate = TablesUpdate<'vault_document_chunks'>;
+export type VaultDocumentInsert = TablesInsert<'vault_documents'>;
+export type VaultDocument = Tables<'vault_documents'>;
+export type VaultDocumentUpdate = TablesUpdate<'vault_documents'>;
 
 export interface IVaultDocumentRepository {
     setToken(token: string): Promise<void>;
