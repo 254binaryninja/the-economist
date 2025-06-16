@@ -9,6 +9,11 @@ export class WorkspaceController {
         @inject(TYPES.IWorkspaceRepository) private workspaceRepository: IWorkspaceRepository
     ) {}
 
+    async getByUserId(userId: string, token: string) {
+        await this.workspaceRepository.setToken(token);
+        return this.workspaceRepository.getByUserId(userId);
+    }
+
     async findById(id: string, token: string) {
         await this.workspaceRepository.setToken(token);
         return this.workspaceRepository.findById(id);
