@@ -30,7 +30,7 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
   try {
     // Get authenticated user
     const { getToken } = await auth();
-    const token = await getToken({ template: 'supabase' });
+    const token = await getToken();
     
     if (!token) {
       return new Response('Unauthorized', { status: 401 });
