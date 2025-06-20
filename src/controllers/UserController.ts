@@ -8,9 +8,9 @@ export class UserController {
         @inject(TYPES.IUserRepository) private userRepository: IUserRepository
     ) {}
 
-    async findById(id: string, token: string){
+    async findByUserId(user_id: string, token: string){
         await this.userRepository.setToken(token);
-        return this.userRepository.findById(id);
+        return this.userRepository.findByUserId(user_id);
     }
 
     async findByEmail(email: string, token: string) {

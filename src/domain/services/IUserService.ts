@@ -17,12 +17,12 @@ export class UserService implements IUserRepository{
         this.token = token;
     }
 
-    async findById(id: string): Promise<User | null> {
+    async findByUserId(user_id: string): Promise<User | null> {
        const supabaseWithAuth = this.getSupabaseClient();
        const { data, error } = await supabaseWithAuth
               .from('users')
               .select('*')
-              .eq('id', id)
+              .eq('user_id', user_id)
               .single();
 
         if (error) {

@@ -7,7 +7,7 @@ export type UserUpdate = TablesUpdate<'users'>;
 
 export interface IUserRepository {
     setToken(token: string): Promise<void>;
-    findById(id: string): Promise<User | null>;
+    findByUserId(user_id: string): Promise<User | null>;
     findByEmail(email: string): Promise<User | null>;
     create(user: UserInsert): Promise<User>;
     update(id: string, user: UserUpdate): Promise<User | null>;
