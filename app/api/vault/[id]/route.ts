@@ -2,7 +2,7 @@
 
 import { streamText,embed } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { container } from '@/src/config/inversify.config';
+import { serverContainer } from '@/src/config/inversify.config';
 import { TYPES } from '@/src/config/types';
 import { VaultMessagesController } from '@/src/controllers/VaultMessagesController';
 import { RedisContextController } from '@/src/controllers/RedisContextController';
@@ -80,10 +80,10 @@ export async function POST(req:Request,{ params}:{params:Promise<{id:string}>}) 
                 apiKey: process.env.GOOGLE_GENERATIVE_AI_API_KEY
                 })('gemini-2.0-flash', { useSearchGrounding: true });
 
-            // Get controllers from DI container
-            const vaultMessagesController = container.get<VaultMessagesController>(TYPES.VaultMessagesController);
-            const redisContextController = container.get<RedisContextController>(TYPES.RedisContextController);
-            const pineconeVaultController = container.get<PineconeVaultController>(TYPES.PineconeVaultController);
+            // Get controllers from DI container            const vaultMessagesController = serverContainer.get<VaultMessagesController>(TYPES.VaultMessagesController);
+            const redisContextController = serverContainer.get<RedisContextController>(TYPES.RedisContextController);
+            const pineconeVaultController = serverContainer.get<PineconeVaultController>(TYPES.PineconeVaultController);
+            const vaultMessagesController = serverContainer.get<VaultMessagesController>(TYPES.VaultMessagesController);
 
             // Find last user message
             const userMessages = messages.filter((m: Message) => m.role === 'user');

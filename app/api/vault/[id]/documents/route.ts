@@ -1,7 +1,7 @@
 //app/api/vault/[id]/documents/route.ts
 
 import { NextRequest } from 'next/server';
-import { container } from '@/src/config/inversify.config';
+import { serverContainer } from '@/src/config/inversify.config';
 import { TYPES } from '@/src/config/types';
 import { VaultDocumentController } from '@/src/controllers/VaultDocumentController';
 import { VaultDocumentChunkController } from '@/src/controllers/VaultDocumentChunkController';
@@ -40,13 +40,11 @@ export async function POST(
         createErrorResponse('Vault ID is required', 'VALIDATION_ERROR'),
         { status: 400 }
       );
-    }
-
-    // Get controllers from DI container
-    const vaultDocumentController = container.get<VaultDocumentController>(TYPES.VaultDocumentController);
-    const vaultDocumentChunkController = container.get<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController);
-    const textEmbeddingController = container.get<TextEmbeddingController>(TYPES.TextEmbeddingController);
-    const pineconeVaultController = container.get<PineconeVaultController>(TYPES.PineconeVaultController);
+    }    // Get controllers from DI container
+    const vaultDocumentController = serverContainer.get<VaultDocumentController>(TYPES.VaultDocumentController);
+    const vaultDocumentChunkController = serverContainer.get<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController);
+    const textEmbeddingController = serverContainer.get<TextEmbeddingController>(TYPES.TextEmbeddingController);
+    const pineconeVaultController = serverContainer.get<PineconeVaultController>(TYPES.PineconeVaultController);
 
     const formData = await req.formData();
     const file = formData.get('file') as File;
@@ -206,7 +204,7 @@ export async function GET(
       );
     }
 
-    const vaultDocumentController = container.get<VaultDocumentController>(TYPES.VaultDocumentController);
+    const vaultDocumentController = serverContainer.get<VaultDocumentController>(TYPES.VaultDocumentController);
     const documents = await vaultDocumentController.getByVaultId(vaultId, token);
 
     return Response.json(

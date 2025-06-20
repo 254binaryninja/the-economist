@@ -1,7 +1,7 @@
 //app/api/vault/[id]/documents/[documentId]/route.ts
 
 import { NextRequest } from 'next/server';
-import { container } from '@/src/config/inversify.config';
+import { serverContainer } from '@/src/config/inversify.config';
 import { TYPES } from '@/src/config/types';
 import { VaultDocumentController } from '@/src/controllers/VaultDocumentController';
 import { VaultDocumentChunkController } from '@/src/controllers/VaultDocumentChunkController';
@@ -41,12 +41,10 @@ export async function DELETE(
         createErrorResponse('Document ID is required', 'VALIDATION_ERROR'),
         { status: 400 }
       );
-    }
-
-    // Get controllers from DI container
-    const vaultDocumentController = container.get<VaultDocumentController>(TYPES.VaultDocumentController);
-    const vaultDocumentChunkController = container.get<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController);
-    const pineconeVaultController = container.get<PineconeVaultController>(TYPES.PineconeVaultController);
+    }    // Get controllers from DI container
+    const vaultDocumentController = serverContainer.get<VaultDocumentController>(TYPES.VaultDocumentController);
+    const vaultDocumentChunkController = serverContainer.get<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController);
+    const pineconeVaultController = serverContainer.get<PineconeVaultController>(TYPES.PineconeVaultController);
 
     // First, verify that the document exists and belongs to the vault
     const document = await vaultDocumentController.findById(documentId, token);
@@ -157,7 +155,7 @@ export async function GET(
       );
     }
 
-    const vaultDocumentController = container.get<VaultDocumentController>(TYPES.VaultDocumentController);
+    const vaultDocumentController = serverContainer.get<VaultDocumentController>(TYPES.VaultDocumentController);
     
     // Get the document
     const document = await vaultDocumentController.findById(documentId, token);
