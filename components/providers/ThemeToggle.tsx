@@ -1,8 +1,9 @@
 "use client";
 
-import { MoonIcon,SunIcon } from "@heroicons/react/24/outline";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -17,15 +18,20 @@ function ThemeToggle() {
   if (!mounted) {
     return null;
   }
-
   // Function to toggle theme
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
+  
   return (
-    <button onClick={() => toggleTheme()} className="m-1 p-2">
-      {theme === "dark" ? <MoonIcon className="h-6 w-6" /> : <SunIcon className="h-6 w-6" />}
-    </button>
+    <Button
+      variant="outline"
+      size="icon"
+      onClick={toggleTheme}
+      className="z-50"
+    >
+      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+    </Button>
   );
 }
 
