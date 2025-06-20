@@ -1,4 +1,4 @@
-import { container } from "@/src/config/inversify.config"
+import { clientContainer } from "@/src/config/client.inversify.config"
 import { TYPES } from "@/src/config/types" 
 import { EconomicNewsFeedController } from "@/src/controllers/EconomicNewsFeedController"
 import { tool } from 'ai'
@@ -17,7 +17,7 @@ export const economicNewsTool = tool({
   execute: async (input) => {
     try {
       const { entity, minSentiment, category } = economicNewsSchema.parse(input);
-      const controller = container.get<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController);
+      const controller = clientContainer.get<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController);
       
       const result = await controller.fetchNews({ entity, minSentiment, category });
       

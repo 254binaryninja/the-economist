@@ -7,7 +7,7 @@
 
 
 import { useState } from "react";
-import { container } from "@/src/config/inversify.config";
+import { clientContainer } from "@/src/config/client.inversify.config";
 import { TYPES } from "@/src/config/types";
 import { VaultDocumentController } from "@/src/controllers/VaultDocumentController";
 import { useSession,useAuth } from "@clerk/nextjs";
@@ -21,7 +21,7 @@ export function useVaultDocuments ( vaultID : string ) {
     const { isSignedIn,isLoaded } = useAuth();
 
     // Get the controller from the DI container
-    const vaultDocumentController = container.get<VaultDocumentController>(TYPES.VaultDocumentController)
+    const vaultDocumentController = clientContainer.get<VaultDocumentController>(TYPES.VaultDocumentController)
 
      // Get the states
      const [ documents,setDocuments ] = useState<VaultDocument[]>([]);

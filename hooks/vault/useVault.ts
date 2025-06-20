@@ -1,5 +1,5 @@
 import { VaultController } from "@/src/controllers/VaultController"
-import { container } from "@/src/config/inversify.config";
+import { clientContainer } from "@/src/config/client.inversify.config";
 import { TYPES } from "@/src/config/types";
 import { use, useState } from "react";
 import { useSession,useAuth } from "@clerk/nextjs";
@@ -13,12 +13,14 @@ export function useVault () {
     const { session } = useSession();
     const { isSignedIn, isLoaded } = useAuth();
     // Initialize the vault controller
-    const vaultController = container.get<VaultController>(TYPES.VaultController);
+    const vaultController = clientContainer.get<VaultController>(TYPES.VaultController);
 
     // Get the states
     const [ vaults, setVaults ] = useState<Vault[]>([]);
     const [ loading, setLoading ] = useState<boolean>(false);
     const [ error, setError ] = useState<string | null>(null);
+    const [ editingVault,setEditingVault] = useState<Vault | null>(null);
+    const [ newVaultName, setNewVaultName ] = useState<string>("");
 
     // Function to fetch vaults
     const fetchVaults = async () => {
@@ -79,9 +81,10 @@ export function useVault () {
     }
 
     // Edit vault function
-    const editVault = async (vaultId: string, updatedVault: Partial<Vault>) => {
+    const editVault = async () => {
         setLoading(true);
         setError(null);
+        if (!editingVault || !newVaultName)  return;
         try {
             const token = await session?.getToken();
             if (!token) {
@@ -89,8 +92,10 @@ export function useVault () {
                 setError("Token is not available")
                 return;
             }
-            await vaultController.update(vaultId, updatedVault, token);
-            setVaults(prevVaults => prevVaults.map(vault => vault.id === vaultId ? { ...vault, ...updatedVault } : vault));
+            const updatedVault = await vaultController.update(editingVault?.id, {
+                title: newVaultName,
+            }, token);
+            setVaults(prevVaults => prevVaults.map(vault => vault.id === editingVault.id ? { ...vault, ...updatedVault } : vault));
             toast.success("Vault updated successfully");
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unexpected error occurred");
@@ -99,7 +104,7 @@ export function useVault () {
         }
     }
 
-    const createVault = async (newVault: VaultInsert) => {
+    const createVault = async ( vaultTitle?:string ) => {
         setLoading(true);
         setError(null);
         try {
@@ -112,7 +117,8 @@ export function useVault () {
             if (!token) {
                 throw new Error("Token is not available");
             }
-            const createdVault = await vaultController.create({ ...newVault, user_id ,id}, token);
+            const title = vaultTitle || `New Vault ${vaults.length + 1}`;
+            const createdVault = await vaultController.create({ id, user_id, title}, token);
             setVaults(prevVaults => [...prevVaults, createdVault]);
             toast.success("Vault created successfully");
         } catch (err) {
@@ -125,6 +131,11 @@ export function useVault () {
         vaults,
         loading,
         error,
+        editingVault,
+        newVaultName,
+        setNewVaultName,
+        setEditingVault,
+        createVault,
         fetchVaults,
         deleteVault,
         editVault

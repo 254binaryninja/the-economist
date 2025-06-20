@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { container } from "@/src/config/inversify.config";
+import { clientContainer } from "@/src/config/client.inversify.config";
 import { TYPES } from "@/src/config/types";
 import { VaultMessagesController } from "@/src/controllers/VaultMessagesController";
 import { useSession, useAuth } from "@clerk/nextjs";
@@ -15,7 +15,7 @@ export function useVaultMessages( vaultId : string ) {
    const  { isSignedIn,isLoaded } = useAuth();
 
    // Get controller from DI container 
-   const vaultMesssagesController = container.get<VaultMessagesController>(TYPES.VaultMessagesController)
+   const vaultMesssagesController = clientContainer.get<VaultMessagesController>(TYPES.VaultMessagesController)
 
    // Get states
    const [ messages,setMessages ] = useState<VaultMessage[]>([])

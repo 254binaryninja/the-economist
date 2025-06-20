@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { container } from "@/src/config/inversify.config";
+import { clientContainer } from "@/src/config/client.inversify.config";
 import { TYPES } from "@/src/config/types";
 import { WorkspaceMessagesController } from "@/src/controllers/WorkspaceMesssagesController";
 import { useSession, useAuth } from "@clerk/nextjs";
@@ -14,7 +14,7 @@ export function useWorkspaceMessages(workspaceId: string) {
     const { isSignedIn, isLoaded } = useAuth();
 
     // Get the controller from the DI container
-    const workspaceMessagesController = container.get<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController);
+    const workspaceMessagesController = clientContainer.get<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController);
 
     // Get the states
     const [messages, setMessages] = useState<WorkspaceMessage[]>([]);
