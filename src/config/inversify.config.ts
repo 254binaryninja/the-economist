@@ -44,10 +44,14 @@ import { IPineconeVaultService } from "../domain/services/IPineconeVaultService"
 import { ITextEmbeddingService } from "../domain/services/ITextEmbeddingService";
 import { IEconomicNewsFeedService } from "../domain/services/IEconomicNewsFeedService";
 
-// Create a new Inversify container
+// Create client-side container (safe for browser)
 const container = new Container();
 
-// Service bindings (Repository implementations)
+// Create server-side container (Node.js only dependencies)
+const serverContainer = new Container();
+
+// ============ CLIENT-SAFE BINDINGS ============
+// Service bindings (Repository implementations) - Client Safe
 container.bind<IUserRepository>(TYPES.IUserRepository).to(UserService).inSingletonScope();
 container.bind<IVaultRepository>(TYPES.IVaultRepository).to(VaultService).inSingletonScope();
 container.bind<IVaultDocumentRepository>(TYPES.IVaultDocumentRepository).to(IVaultDocumentService).inSingletonScope();
@@ -56,12 +60,10 @@ container.bind<IVaultDocumentChunkRepository>(TYPES.IVaultDocumentChunkRepositor
 container.bind<IVaultMessagesRepository>(TYPES.IVaultMessagesRepository).to(VaultMessagesService).inSingletonScope();
 container.bind<IWorkspaceRepository>(TYPES.IWorkspaceRepository).to(WorkspaceService).inSingletonScope();
 container.bind<IWorkspaceMessagesRepository>(TYPES.IWorkspaceMessagesRepository).to(WorkspaceMessagesService).inSingletonScope();
-container.bind<IRedisContext>(TYPES.IRedisContextRepository).to(RedisContextService).inSingletonScope();
-container.bind<IPineconeVaultRepository>(TYPES.IPineconeVaultRepository).to(IPineconeVaultService).inSingletonScope();
 container.bind<ITextEmbeddingRepository>(TYPES.ITextEmbeddingRepository).to(ITextEmbeddingService).inSingletonScope();
 container.bind<IEconomicNewsFeedRepository>(TYPES.IEconomicsNewsFeedRepository).to(IEconomicNewsFeedService).inSingletonScope();
 
-// Controller bindings
+// Controller bindings - Client Safe
 container.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
 container.bind<VaultController>(TYPES.VaultController).to(VaultController).inSingletonScope();
 container.bind<VaultDocumentController>(TYPES.VaultDocumentController).to(VaultDocumentController).inSingletonScope();
@@ -70,11 +72,41 @@ container.bind<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController)
 container.bind<VaultMessagesController>(TYPES.VaultMessagesController).to(VaultMessagesController).inSingletonScope();
 container.bind<WorkspaceController>(TYPES.WorkspaceController).to(WorkspaceController).inSingletonScope();
 container.bind<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController).to(WorkspaceMessagesController).inSingletonScope();
-container.bind<RedisContextController>(TYPES.RedisContextController).to(RedisContextController).inSingletonScope();
-container.bind<PineconeVaultController>(TYPES.PineconeVaultController).to(PineconeVaultController).inSingletonScope();
 container.bind<TextEmbeddingController>(TYPES.TextEmbeddingController).to(TextEmbeddingController).inSingletonScope();
 container.bind<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController).to(EconomicNewsFeedController).inSingletonScope();
 
+// ============ SERVER-ONLY BINDINGS ============
+// All client-safe services plus server-only dependencies
+// Copy all client-safe bindings to server container
+serverContainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserService).inSingletonScope();
+serverContainer.bind<IVaultRepository>(TYPES.IVaultRepository).to(VaultService).inSingletonScope();
+serverContainer.bind<IVaultDocumentRepository>(TYPES.IVaultDocumentRepository).to(IVaultDocumentService).inSingletonScope();
+serverContainer.bind<IVaultWorkflowRepository>(TYPES.IVaultWorkflowRepository).to(IVaultWorkflowService).inSingletonScope();
+serverContainer.bind<IVaultDocumentChunkRepository>(TYPES.IVaultDocumentChunkRepository).to(IVaultDocumentChunkService).inSingletonScope();
+serverContainer.bind<IVaultMessagesRepository>(TYPES.IVaultMessagesRepository).to(VaultMessagesService).inSingletonScope();
+serverContainer.bind<IWorkspaceRepository>(TYPES.IWorkspaceRepository).to(WorkspaceService).inSingletonScope();
+serverContainer.bind<IWorkspaceMessagesRepository>(TYPES.IWorkspaceMessagesRepository).to(WorkspaceMessagesService).inSingletonScope();
+serverContainer.bind<ITextEmbeddingRepository>(TYPES.ITextEmbeddingRepository).to(ITextEmbeddingService).inSingletonScope();
+serverContainer.bind<IEconomicNewsFeedRepository>(TYPES.IEconomicsNewsFeedRepository).to(IEconomicNewsFeedService).inSingletonScope();
+
+// Server-only dependencies (Node.js modules like Pinecone, Redis, etc.)
+serverContainer.bind<IRedisContext>(TYPES.IRedisContextRepository).to(RedisContextService).inSingletonScope();
+serverContainer.bind<IPineconeVaultRepository>(TYPES.IPineconeVaultRepository).to(IPineconeVaultService).inSingletonScope();
+
+// Server-only controllers
+serverContainer.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
+serverContainer.bind<VaultController>(TYPES.VaultController).to(VaultController).inSingletonScope();
+serverContainer.bind<VaultDocumentController>(TYPES.VaultDocumentController).to(VaultDocumentController).inSingletonScope();
+serverContainer.bind<VaultWorkflowController>(TYPES.VaultWorkflowController).to(VaultWorkflowController).inSingletonScope();
+serverContainer.bind<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController).to(VaultDocumentChunkController).inSingletonScope();
+serverContainer.bind<VaultMessagesController>(TYPES.VaultMessagesController).to(VaultMessagesController).inSingletonScope();
+serverContainer.bind<WorkspaceController>(TYPES.WorkspaceController).to(WorkspaceController).inSingletonScope();
+serverContainer.bind<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController).to(WorkspaceMessagesController).inSingletonScope();
+serverContainer.bind<TextEmbeddingController>(TYPES.TextEmbeddingController).to(TextEmbeddingController).inSingletonScope();
+serverContainer.bind<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController).to(EconomicNewsFeedController).inSingletonScope();
+serverContainer.bind<RedisContextController>(TYPES.RedisContextController).to(RedisContextController).inSingletonScope();
+serverContainer.bind<PineconeVaultController>(TYPES.PineconeVaultController).to(PineconeVaultController).inSingletonScope();
 
 
-export { container };
+
+export { container, serverContainer };
