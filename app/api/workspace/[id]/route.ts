@@ -2,7 +2,7 @@
 
 import { streamText } from 'ai';
 import { createGoogleGenerativeAI } from '@ai-sdk/google';
-import { container } from '@/src/config/inversify.config';
+import { serverContainer } from '@/src/config/inversify.config';
 import { TYPES } from '@/src/config/types';
 import { WorkspaceMessagesController } from '@/src/controllers/WorkspaceMesssagesController';
 import { RedisContextController } from '@/src/controllers/RedisContextController';
@@ -72,11 +72,9 @@ export async function POST(req: Request, { params }: { params: Promise<{ id: str
     const selectedSystem: SystemPromptKey = system && system in systemPrompts ? system as SystemPromptKey : 'normal';
     const SYSTEM_PROMPT = systemPrompts[selectedSystem];
 
-    console.log(`Using ${selectedSystem} economic perspective for workspace ${workspaceId}`);//TODO:Remove the console.log in production
-
-    // Get controllers from DI container
-    const workspaceMessagesController = container.get<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController);
-    const redisContextController = container.get<RedisContextController>(TYPES.RedisContextController);
+    console.log(`Using ${selectedSystem} economic perspective for workspace ${workspaceId}`);//TODO:Remove the console.log in production    // Get controllers from DI container
+    const workspaceMessagesController = serverContainer.get<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController);
+    const redisContextController = serverContainer.get<RedisContextController>(TYPES.RedisContextController);
 
     // Find last user message
     const userMessages = messages.filter((m: Message) => m.role === 'user');
