@@ -10,7 +10,8 @@
     "migrate": "drizzle-kit migrate",
     "generate": "drizzle-kit generate",
     "studio": "drizzle-kit studio",
-    "test:economic": "tsx scripts/test.ts"
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.19",
