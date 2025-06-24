@@ -1,7 +1,9 @@
-export default function Page () {
+import WorkspaceDashboard from "@/components/workspace/WorkspaceDashboard";
+
+export default function Page() {
     return (
-        <div>
-            
-            </div>
-    )
+        <div className="h-screen flex flex-col">
+            <WorkspaceDashboard />
+        </div>
+    );
 }
