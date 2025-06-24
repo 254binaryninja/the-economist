@@ -14,6 +14,8 @@ export const workspaceMessage = p.pgTable('workspace_messages',{
     role:p.text({ enum: ['user', 'assistant'] }).notNull(),
     content:p.text('content').notNull(),
     created_at:p.timestamp('created_at',{ withTimezone: true }).defaultNow(),
+    metadata:p.jsonb('metadata'),
+    is_upvoted:p.boolean('is_upvoted')
 })
 
 //Workspace message relations

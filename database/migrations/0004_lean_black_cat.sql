@@ -1,0 +1,1 @@
+ALTER TABLE "workspace_messages" ADD COLUMN "is_upvoted" boolean;
