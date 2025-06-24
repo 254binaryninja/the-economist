@@ -236,6 +236,8 @@ export type Database = {
           content: string
           created_at: string | null
           id: string
+          is_upvoted: boolean | null
+          metadata: Json | null
           role: string
           workspace_id: string
         }
@@ -243,6 +245,8 @@ export type Database = {
           content: string
           created_at?: string | null
           id: string
+          is_upvoted?: boolean | null
+          metadata?: Json | null
           role: string
           workspace_id: string
         }
@@ -250,6 +254,8 @@ export type Database = {
           content?: string
           created_at?: string | null
           id?: string
+          is_upvoted?: boolean | null
+          metadata?: Json | null
           role?: string
           workspace_id?: string
         }
