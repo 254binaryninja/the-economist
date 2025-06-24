@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "The Economist AI:providing expert economic analysis, research workflows, and up-to-date market news.",
   metadataBase: new URL("https://the-economist.vercel.app"),
   icons:{
-    icon: "/images/logo.png",
+    icon: "/images/the-economist.jpg",
   },
   openGraph: {
     title: "The Economist AI – Economic Toolkit",
