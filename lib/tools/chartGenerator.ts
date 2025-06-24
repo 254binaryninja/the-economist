@@ -1,60 +1,51 @@
-import { tool } from "ai";
-import { z } from "zod";
-import { createSuccessResponse, createErrorResponse } from "@/lib/utils/toolResponse";
+import { tool } from 'ai';
+import { z } from 'zod';
+import { createSuccessResponse, createErrorResponse } from '@/lib/utils/toolResponse';
 
-// Schema for chart tool inputs
+// Define the chart data item schema - simplified for Gemini API compatibility
+const ChartDataItem = z.object({
+  x: z.any().describe("X-axis value (can be string or number)"),
+  y: z.any().describe("Y-axis value (can be string or number)"),
+}).passthrough().describe("Individual data point for the chart");
+
 const chartSchema = z.object({
-  data: z.array(
-    z.record(z.union([z.string(), z.number()]))
-  ),
-  xKey: z.string(),
-  yKey: z.string(),
-  chartType: z.enum(["bar", "line", "area", "pie"]).default("bar")
+  data: z.array(ChartDataItem).min(1).describe("Array of data points for the chart"),
+  xKey: z.string().describe("Key name for x-axis values in the data"),
+  yKey: z.string().describe("Key name for y-axis values in the data"),
+  chartType: z.enum(['bar', 'line', 'area', 'pie']).default('bar').describe("Type of chart to generate"),
 });
 
 export const chartTool = tool({
-  description: "Generate a shadcn/ui compatible chart payload (data + x/y keys + type).",
+  description: "Generate a shadcn/ui compatible chart payload with validated data structure.",
   parameters: chartSchema,
   execute: async (input) => {
-    try {
-      const { data, xKey, yKey, chartType } = chartSchema.parse(input);
-
-      // Validate that the data contains the specified keys
-      if (!data.every(item => item.hasOwnProperty(xKey) && item.hasOwnProperty(yKey))) {
-        return createErrorResponse(
-          `All data items must contain the keys: ${xKey} and ${yKey}`,
-          'VALIDATION_ERROR',
-          'Some data items are missing required keys for chart generation.',
-          'Please ensure all data items have both xKey and yKey properties.'
-        );
-      }
-
-      // Validate data is not empty
-      if (data.length === 0) {
-        return createErrorResponse(
-          'Chart data cannot be empty',
-          'VALIDATION_ERROR',
-          'No data provided for chart generation.',
-          'Please provide at least one data item for the chart.'
-        );
-      }
-
-      // Return successful chart payload that matches AgentChart component interface
-      return createSuccessResponse({
-        data,
-        xKey,
-        yKey,
-        type: chartType
-      });
-    } catch (error) {
-      console.error("Error in chart generation tool:", error);
-      
+    const { data, xKey, yKey, chartType } = chartSchema.parse(input);
+    
+    // Validate that all items have the required keys
+    if (!data.every(item => xKey in item && yKey in item)) {
       return createErrorResponse(
-        error instanceof Error ? error.message : 'Chart generation failed',
-        'UNKNOWN_ERROR',
-        'Failed to generate chart configuration.',
-        'Please check your input data and try again.'
+        `Missing keys ${xKey}/${yKey}`,
+        'VALIDATION_ERROR',
+        'Some items missing required x/y fields.',
+        'Ensure all items have both xKey and yKey.'
       );
     }
-  }
+    
+    // Additional validation for empty data (though schema already handles this with min(1))
+    if (data.length === 0) {
+      return createErrorResponse(
+        'Chart data cannot be empty',
+        'VALIDATION_ERROR',
+        'No data provided.',
+        'Provide at least one data point.'
+      );
+    }
+    
+    return createSuccessResponse({ 
+      data, 
+      xKey, 
+      yKey, 
+      type: chartType 
+    });
+  },
 });
