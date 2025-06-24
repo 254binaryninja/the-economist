@@ -1,6 +1,5 @@
-
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: "user" | "assistant";
   content: string;
   timestamp: string;
   grounding?: {
@@ -8,7 +7,7 @@ export interface ChatMessage {
       web?: {
         uri: string;
         title: string;
-      }
+      };
     }[];
     searchQueries?: string[];
   };

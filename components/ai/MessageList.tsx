@@ -1,23 +1,26 @@
-'use client';
+"use client";
 
-import { forwardRef } from 'react';
-import { MessageBubble } from './MessageBubble';
-import { LoadingIndicator } from './LoadingIndicator';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import type { ExtendedMessage } from '@/types';
+import { forwardRef } from "react";
+import { MessageBubble } from "./MessageBubble";
+import { LoadingIndicator } from "./LoadingIndicator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import type { ExtendedMessage } from "@/types";
 
 interface MessageListProps {
   messages: ExtendedMessage[];
   scrollRef: React.RefObject<HTMLDivElement>;
   isLoading: boolean;
-  onToggleUpvote?: (id: string, voteType: 'upvote' | 'downvote') => Promise<void>;
+  onToggleUpvote?: (
+    id: string,
+    voteType: "upvote" | "downvote",
+  ) => Promise<void>;
 }
 
 export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
   ({ messages, scrollRef, isLoading, onToggleUpvote }, ref) => {
     // Filter out system messages for display
-    const displayMessages = messages.filter(m => m.role !== 'system');
-    
+    const displayMessages = messages.filter((m) => m.role !== "system");
+
     const hasMessages = displayMessages.length > 0;
 
     return (
@@ -33,8 +36,9 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
                     Start a conversation
                   </h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    Type a message below to begin chatting with our AI economist. 
-                    Ask questions, request analysis, or upload files for review.
+                    Type a message below to begin chatting with our AI
+                    economist. Ask questions, request analysis, or upload files
+                    for review.
                   </p>
                 </div>
               </div>
@@ -49,7 +53,7 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
                     onToggleUpvote={onToggleUpvote}
                   />
                 ))}
-                
+
                 {/* Loading indicator at the end of messages */}
                 {isLoading && (
                   <div className="flex justify-start">
@@ -62,7 +66,7 @@ export const MessageList = forwardRef<HTMLDivElement, MessageListProps>(
         </ScrollArea>
       </div>
     );
-  }
+  },
 );
 
-MessageList.displayName = 'MessageList';
+MessageList.displayName = "MessageList";

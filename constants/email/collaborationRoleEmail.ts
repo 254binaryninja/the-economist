@@ -1,6 +1,12 @@
 import { CollaborationRoleChange } from "@/types";
 
-export function generateCollaborationRoleEmail({ userName, canvasName, newRole, changedBy, canvasLink }: CollaborationRoleChange): string {
+export function generateCollaborationRoleEmail({
+  userName,
+  canvasName,
+  newRole,
+  changedBy,
+  canvasLink,
+}: CollaborationRoleChange): string {
   return `
     <!DOCTYPE html>
     <html>

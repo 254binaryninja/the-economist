@@ -10,7 +10,7 @@ export default function Loading() {
           <div className="h-4 bg-gray-200 rounded animate-pulse w-24"></div>
         </div>
       </header>
-      
+
       <div className="flex-1 p-4">
         <div className="space-y-4">
           <div className="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>

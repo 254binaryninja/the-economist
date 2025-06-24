@@ -1,15 +1,24 @@
-'use client';
+"use client";
 
-import { useRef, useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Paperclip, X, ChevronDown, ArrowUp } from 'lucide-react';
+import { useRef, useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Paperclip, X, ChevronDown, ArrowUp } from "lucide-react";
 
 export interface ChatInputProps {
   input: string;
   onInputChange: (value: string) => void;
-  onSubmit: (e: React.FormEvent, options?: { files?: FileList; systemMode?: string }) => void;
+  onSubmit: (
+    e: React.FormEvent,
+    options?: { files?: FileList; systemMode?: string },
+  ) => void;
   isLoading?: boolean;
   placeholder?: string;
   systemMode?: string;
@@ -20,11 +29,11 @@ export interface ChatInputProps {
 }
 
 const SYSTEM_MODES = [
-  { value: 'normal', label: 'Normal' },
-  { value: 'keynesian', label: 'Keynesian' },
-  { value: 'classical', label: 'Classical' },
-  { value: 'behavioral', label: 'Behavioral' },
-  { value: 'monetarist', label: 'Monetarist' },
+  { value: "normal", label: "Normal" },
+  { value: "keynesian", label: "Keynesian" },
+  { value: "classical", label: "Classical" },
+  { value: "behavioral", label: "Behavioral" },
+  { value: "monetarist", label: "Monetarist" },
 ];
 
 export function ChatInput({
@@ -33,11 +42,11 @@ export function ChatInput({
   onSubmit,
   isLoading = false,
   placeholder = "Message Economist AI...",
-  systemMode = 'normal',
+  systemMode = "normal",
   onSystemModeChange,
   showSystemModeSelector = true,
   maxFiles = 10,
-  acceptedFileTypes = "*/*"
+  acceptedFileTypes = "*/*",
 }: ChatInputProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -54,7 +63,7 @@ export function ChatInput({
 
   const removeFile = (indexToRemove: number) => {
     if (!files) return;
-    
+
     const dt = new DataTransfer();
     Array.from(files).forEach((file, index) => {
       if (index !== indexToRemove) {
@@ -62,7 +71,7 @@ export function ChatInput({
       }
     });
     setFiles(dt.files);
-    
+
     if (fileInputRef.current) {
       fileInputRef.current.files = dt.files;
     }
@@ -71,25 +80,26 @@ export function ChatInput({
   const clearFiles = () => {
     setFiles(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() && !files?.length) return;
-    
+
     onSubmit(e, {
       files: files || undefined,
-      systemMode: showSystemModeSelector ? systemMode : undefined
+      systemMode: showSystemModeSelector ? systemMode : undefined,
     });
-    
+
     clearFiles();
-  };  const adjustTextareaHeight = () => {
+  };
+  const adjustTextareaHeight = () => {
     const textarea = textareaRef.current;
     if (textarea) {
       // Keep it single line for rectangle appearance
-      textarea.style.height = '24px';
+      textarea.style.height = "24px";
     }
   };
 
@@ -102,7 +112,8 @@ export function ChatInput({
   // Auto-adjust textarea height when input changes
   useEffect(() => {
     adjustTextareaHeight();
-  }, [input]);  return (
+  }, [input]);
+  return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6">
       {/* System Mode Selector */}
       {showSystemModeSelector && onSystemModeChange && (
@@ -125,7 +136,8 @@ export function ChatInput({
             <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
-      )}      {/* File Attachments Display */}
+      )}{" "}
+      {/* File Attachments Display */}
       {fileArray.length > 0 && (
         <div className="mb-3 p-3 bg-muted/50 rounded-xl border border-border">
           <div className="flex items-center justify-between mb-2">
@@ -164,9 +176,13 @@ export function ChatInput({
             ))}
           </div>
         </div>
-      )}      {/* Main Input Container */}
+      )}{" "}
+      {/* Main Input Container */}
       <div className="relative bg-background border border-border rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 focus-within:shadow-lg focus-within:border-orange-500">
-        <form onSubmit={handleSubmit} className="flex items-center gap-4 p-4 min-h-[64px]">
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center gap-4 p-4 min-h-[64px]"
+        >
           {/* Hidden File Input */}
           <input
             ref={fileInputRef}
@@ -195,7 +211,7 @@ export function ChatInput({
             value={input}
             onChange={handleTextareaChange}
             onKeyDown={(e) => {
-              if (e.key === 'Enter' && !e.shiftKey) {
+              if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
                 handleSubmit(e);
               }
@@ -204,7 +220,7 @@ export function ChatInput({
             disabled={isLoading}
             rows={1}
             className="flex-1 resize-none bg-transparent border-none outline-none text-foreground placeholder-muted-foreground text-base leading-6 max-h-[32px] overflow-hidden py-1"
-            style={{ minHeight: '24px' }}
+            style={{ minHeight: "24px" }}
           />
 
           {/* Submit Button */}

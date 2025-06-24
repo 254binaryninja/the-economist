@@ -1,7 +1,7 @@
-'use client'
-import * as Clerk from '@clerk/elements/common'
-import * as SignIn from '@clerk/elements/sign-in'
-import { Button } from '@/components/ui/button'
+"use client";
+import * as Clerk from "@clerk/elements/common";
+import * as SignIn from "@clerk/elements/sign-in";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,10 +9,10 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Icons } from '@/components/ui/icons'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/ui/icons";
 
 export default function SignInPage() {
   return (
@@ -21,10 +21,15 @@ export default function SignInPage() {
         <Clerk.Loading>
           {(isGlobalLoading) => (
             <>
-              <SignIn.Step name="start">                <Card className="w-full sm:w-96">
+              <SignIn.Step name="start">
+                {" "}
+                <Card className="w-full sm:w-96">
                   <CardHeader>
                     <CardTitle>Sign in to The Economist AI</CardTitle>
-                    <CardDescription>Welcome back! Please sign in to access your economic insights</CardDescription>
+                    <CardDescription>
+                      Welcome back! Please sign in to access your economic
+                      insights
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <div className="grid grid-cols-1 gap-x-4">
@@ -72,8 +77,8 @@ export default function SignInPage() {
                               return isLoading ? (
                                 <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                'Continue'
-                              )
+                                "Continue"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
@@ -94,17 +99,26 @@ export default function SignInPage() {
                   <CardHeader>
                     <CardTitle>Use another method</CardTitle>
                     <CardDescription>
-                      Facing issues? You can use any of these methods to sign in.
+                      Facing issues? You can use any of these methods to sign
+                      in.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
                     <SignIn.SupportedStrategy name="email_code" asChild>
-                      <Button type="button" variant="link" disabled={isGlobalLoading}>
+                      <Button
+                        type="button"
+                        variant="link"
+                        disabled={isGlobalLoading}
+                      >
                         Email code
                       </Button>
                     </SignIn.SupportedStrategy>
                     <SignIn.SupportedStrategy name="password" asChild>
-                      <Button type="button" variant="link" disabled={isGlobalLoading}>
+                      <Button
+                        type="button"
+                        variant="link"
+                        disabled={isGlobalLoading}
+                      >
                         Password
                       </Button>
                     </SignIn.SupportedStrategy>
@@ -118,8 +132,8 @@ export default function SignInPage() {
                               return isLoading ? (
                                 <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                'Go back'
-                              )
+                                "Go back"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
@@ -158,8 +172,8 @@ export default function SignInPage() {
                                 return isLoading ? (
                                   <Icons.spinner className="size-4 animate-spin" />
                                 ) : (
-                                  'Continue'
-                                )
+                                  "Continue"
+                                );
                               }}
                             </Clerk.Loading>
                           </Button>
@@ -187,7 +201,9 @@ export default function SignInPage() {
                     </CardHeader>
                     <CardContent className="grid gap-y-4">
                       <Clerk.Field name="code">
-                        <Clerk.Label className="sr-only">Email verification code</Clerk.Label>
+                        <Clerk.Label className="sr-only">
+                          Email verification code
+                        </Clerk.Label>
                         <div className="grid gap-y-2 items-center justify-center">
                           <div className="flex justify-center text-center">
                             <Clerk.Input
@@ -202,7 +218,7 @@ export default function SignInPage() {
                                   >
                                     {value}
                                   </div>
-                                )
+                                );
                               }}
                             />
                           </div>
@@ -214,7 +230,10 @@ export default function SignInPage() {
                             fallback={({ resendableAfter }) => (
                               <Button variant="link" size="sm" disabled>
                                 Didn&apos;t receive a code? Resend (
-                                <span className="tabular-nums">{resendableAfter}</span>)
+                                <span className="tabular-nums">
+                                  {resendableAfter}
+                                </span>
+                                )
                               </Button>
                             )}
                           >
@@ -234,8 +253,8 @@ export default function SignInPage() {
                                 return isLoading ? (
                                   <Icons.spinner className="size-4 animate-spin" />
                                 ) : (
-                                  'Continue'
-                                )
+                                  "Continue"
+                                );
                               }}
                             </Clerk.Loading>
                           </Button>
@@ -255,5 +274,5 @@ export default function SignInPage() {
         </Clerk.Loading>
       </SignIn.Root>
     </div>
-  )
+  );
 }

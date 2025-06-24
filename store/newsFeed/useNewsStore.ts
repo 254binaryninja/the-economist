@@ -1,16 +1,19 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { useQuery } from '@tanstack/react-query';
-import { clientContainer } from '@/src/config/client.inversify.config';
-import { TYPES } from '@/src/config/types';
-import { EconomicNewsFeedController } from '@/src/controllers/EconomicNewsFeedController';
-import { Article, NewsFetchParams } from '@/src/domain/repository/IEconomicNewsFeedRepository';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import { useQuery } from "@tanstack/react-query";
+import { clientContainer } from "@/src/config/client.inversify.config";
+import { TYPES } from "@/src/config/types";
+import { EconomicNewsFeedController } from "@/src/controllers/EconomicNewsFeedController";
+import {
+  Article,
+  NewsFetchParams,
+} from "@/src/domain/repository/IEconomicNewsFeedRepository";
 
 // Simple types
 interface NewsFilters {
   entity?: string;
   category?: string;
-  source?: 'all' | 'marketaux' | 'finnhub';
+  source?: "all" | "marketaux" | "finnhub";
 }
 
 interface NewsState {
@@ -18,17 +21,20 @@ interface NewsState {
   filters: NewsFilters;
   currentPage: number;
   itemsPerPage: number;
-  
+
   // Actions
   setFilters: (filters: Partial<NewsFilters>) => void;
   setCurrentPage: (page: number) => void;
   clearFilters: () => void;
 }
 
-const economicNewsFeedController = clientContainer.get<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController);
+const economicNewsFeedController =
+  clientContainer.get<EconomicNewsFeedController>(
+    TYPES.EconomicsNewsFeedController,
+  );
 
 const initialFilters: NewsFilters = {
-  source: 'all',
+  source: "all",
 };
 
 export const useNewsStore = create<NewsState>()(
@@ -56,7 +62,7 @@ export const useNewsStore = create<NewsState>()(
         currentPage: 1,
       });
     },
-  }))
+  })),
 );
 
 // React Query hook for fetching news with caching
@@ -73,7 +79,7 @@ export const useNews = (params?: NewsFetchParams) => {
   };
 
   return useQuery({
-    queryKey: ['news', queryParams],
+    queryKey: ["news", queryParams],
     queryFn: () => economicNewsFeedController.fetchNews(queryParams),
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
@@ -88,20 +94,24 @@ export const usePaginatedNews = () => {
   const itemsPerPage = useNewsStore((state) => state.itemsPerPage);
 
   // Filter articles based on source
-  const filteredArticles = newsData ? (() => {
-    let articles: Article[] = [];
-    
-    if (filters.source === 'all') {
-      articles = [...newsData.marketaux, ...newsData.finnhub];
-    } else if (filters.source === 'marketaux') {
-      articles = newsData.marketaux;
-    } else if (filters.source === 'finnhub') {
-      articles = newsData.finnhub;
-    }
+  const filteredArticles = newsData
+    ? (() => {
+        let articles: Article[] = [];
 
-    // Sort by date (newest first)
-    return articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  })() : [];
+        if (filters.source === "all") {
+          articles = [...newsData.marketaux, ...newsData.finnhub];
+        } else if (filters.source === "marketaux") {
+          articles = newsData.marketaux;
+        } else if (filters.source === "finnhub") {
+          articles = newsData.finnhub;
+        }
+
+        // Sort by date (newest first)
+        return articles.sort(
+          (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+        );
+      })()
+    : [];
 
   // Paginate articles
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -122,12 +132,9 @@ export const usePaginatedNews = () => {
 
 // Selectors for convenience
 export const useNewsFilters = () => useNewsStore((state) => state.filters);
-export const useNewsActions = () => useNewsStore((state) => ({
-  setFilters: state.setFilters,
-  setCurrentPage: state.setCurrentPage,
-  clearFilters: state.clearFilters,
-}));
-
-
-
-
+export const useNewsActions = () =>
+  useNewsStore((state) => ({
+    setFilters: state.setFilters,
+    setCurrentPage: state.setCurrentPage,
+    clearFilters: state.clearFilters,
+  }));

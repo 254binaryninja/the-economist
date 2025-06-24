@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { useEffect } from "react";
+import { AlertTriangle, RefreshCw } from "lucide-react";
 
 export default function Error({
   error,
@@ -11,7 +11,7 @@ export default function Error({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error('Workspace page error:', error);
+    console.error("Workspace page error:", error);
   }, [error]);
 
   return (
@@ -20,15 +20,16 @@ export default function Error({
         <div className="flex justify-center mb-4">
           <AlertTriangle className="h-16 w-16 text-red-500" />
         </div>
-        
+
         <h2 className="text-2xl font-semibold text-gray-900 mb-2">
           Something went wrong
         </h2>
-        
+
         <p className="text-gray-600 mb-6">
-          We encountered an error while loading this workspace. This could be due to a network issue or a temporary server problem.
+          We encountered an error while loading this workspace. This could be
+          due to a network issue or a temporary server problem.
         </p>
-        
+
         <div className="space-y-4">
           <button
             onClick={reset}
@@ -37,7 +38,7 @@ export default function Error({
             <RefreshCw className="h-4 w-4" />
             Try Again
           </button>
-          
+
           {error.digest && (
             <div className="text-xs text-gray-400 font-mono">
               Error ID: {error.digest}

@@ -1,16 +1,19 @@
-'use client';
+"use client";
 
-import { ExternalLink, Search } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import type { GroundingInfo } from '@/types';
+import { ExternalLink, Search } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import type { GroundingInfo } from "@/types";
 
 interface SearchGroundingProps {
   grounding: GroundingInfo;
 }
 
 export default function SearchGrounding({ grounding }: SearchGroundingProps) {
-  if (!grounding || (!grounding.groundingChunks?.length && !grounding.searchQueries?.length)) {
+  if (
+    !grounding ||
+    (!grounding.groundingChunks?.length && !grounding.searchQueries?.length)
+  ) {
     return null;
   }
 
@@ -31,9 +34,9 @@ export default function SearchGrounding({ grounding }: SearchGroundingProps) {
             </h4>
             <div className="flex flex-wrap gap-1">
               {grounding.searchQueries.map((query, index) => (
-                <Badge 
-                  key={index} 
-                  variant="secondary" 
+                <Badge
+                  key={index}
+                  variant="secondary"
                   className="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200"
                 >
                   {query}

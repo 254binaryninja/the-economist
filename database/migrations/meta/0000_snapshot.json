@@ -72,23 +72,17 @@
         "users_id_unique": {
           "name": "users_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         },
         "users_user_id_unique": {
           "name": "users_user_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "user_id"
-          ]
+          "columns": ["user_id"]
         },
         "users_email_unique": {
           "name": "users_email_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       },
       "policies": {},
@@ -138,9 +132,7 @@
         "vault_id_unique": {
           "name": "vault_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -201,12 +193,8 @@
           "name": "vault_documents_vault_id_vault_id_fk",
           "tableFrom": "vault_documents",
           "tableTo": "vault",
-          "columnsFrom": [
-            "vault_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["vault_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -216,9 +204,7 @@
         "vault_documents_id_unique": {
           "name": "vault_documents_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -267,12 +253,8 @@
           "name": "vault_messages_workspace_id_vault_id_fk",
           "tableFrom": "vault_messages",
           "tableTo": "vault",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -282,9 +264,7 @@
         "vault_messages_id_unique": {
           "name": "vault_messages_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -339,12 +319,8 @@
           "name": "vault_workflows_workspace_id_vault_id_fk",
           "tableFrom": "vault_workflows",
           "tableTo": "vault",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -354,9 +330,7 @@
         "vault_workflows_id_unique": {
           "name": "vault_workflows_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -400,9 +374,7 @@
         "workspaces_id_unique": {
           "name": "workspaces_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},
@@ -451,12 +423,8 @@
           "name": "workspace_messages_workspace_id_workspaces_id_fk",
           "tableFrom": "workspace_messages",
           "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -466,9 +434,7 @@
         "workspace_messages_id_unique": {
           "name": "workspace_messages_id_unique",
           "nullsNotDistinct": false,
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "policies": {},

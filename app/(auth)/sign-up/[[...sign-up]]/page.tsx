@@ -1,7 +1,7 @@
-'use client'
-import * as Clerk from '@clerk/elements/common'
-import * as SignUp from '@clerk/elements/sign-up'
-import { Button } from '@/components/ui/button'
+"use client";
+import * as Clerk from "@clerk/elements/common";
+import * as SignUp from "@clerk/elements/sign-up";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,11 +9,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Icons } from '@/components/ui/icons'
-import { cn } from '@/lib/utils'
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Icons } from "@/components/ui/icons";
+import { cn } from "@/lib/utils";
 
 export default function SignUpPage() {
   return (
@@ -22,11 +22,14 @@ export default function SignUpPage() {
         <Clerk.Loading>
           {(isGlobalLoading) => (
             <>
-              <SignUp.Step name="start">                <Card className="w-full sm:w-96">
+              <SignUp.Step name="start">
+                {" "}
+                <Card className="w-full sm:w-96">
                   <CardHeader>
                     <CardTitle>Join The Economist AI</CardTitle>
                     <CardDescription>
-                      Welcome! Create your account to access expert economic analysis and insights.
+                      Welcome! Create your account to access expert economic
+                      analysis and insights.
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-y-4">
@@ -85,24 +88,28 @@ export default function SignUpPage() {
                               return isLoading ? (
                                 <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                'Continue'
-                              )
+                                "Continue"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
                       </SignUp.Action>
                       <Button variant="link" size="sm" asChild>
-                        <Clerk.Link navigate="sign-in">Already have an account? Sign in</Clerk.Link>
+                        <Clerk.Link navigate="sign-in">
+                          Already have an account? Sign in
+                        </Clerk.Link>
                       </Button>
                     </div>
                   </CardFooter>
                 </Card>
-              </SignUp.Step>              <SignUp.Step name="continue">
+              </SignUp.Step>{" "}
+              <SignUp.Step name="continue">
                 <Card className="w-full sm:w-96">
                   <CardHeader>
                     <CardTitle>Complete your profile</CardTitle>
                     <CardDescription>
-                      Choose a username to personalize your Economist AI experience
+                      Choose a username to personalize your Economist AI
+                      experience
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -125,8 +132,8 @@ export default function SignUpPage() {
                               return isLoading ? (
                                 <Icons.spinner className="size-4 animate-spin" />
                               ) : (
-                                'Continue'
-                              )
+                                "Continue"
+                              );
                             }}
                           </Clerk.Loading>
                         </Button>
@@ -135,7 +142,6 @@ export default function SignUpPage() {
                   </CardFooter>
                 </Card>
               </SignUp.Step>
-
               <SignUp.Step name="verifications">
                 <SignUp.Strategy name="email_code">
                   <Card className="w-full sm:w-96">
@@ -148,7 +154,9 @@ export default function SignUpPage() {
                     <CardContent className="grid gap-y-4">
                       <div className="grid items-center justify-center gap-y-2">
                         <Clerk.Field name="code" className="space-y-2">
-                          <Clerk.Label className="sr-only">Email address</Clerk.Label>
+                          <Clerk.Label className="sr-only">
+                            Email address
+                          </Clerk.Label>
                           <div className="flex justify-center text-center">
                             <Clerk.Input
                               type="otp"
@@ -159,21 +167,22 @@ export default function SignUpPage() {
                                   <div
                                     data-status={status}
                                     className={cn(
-                                      'relative flex size-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md',
+                                      "relative flex size-10 items-center justify-center border-y border-r border-input text-sm transition-all first:rounded-l-md first:border-l last:rounded-r-md",
                                       {
-                                        'z-10 ring-2 ring-ring ring-offset-background':
-                                          status === 'cursor' || status === 'selected',
+                                        "z-10 ring-2 ring-ring ring-offset-background":
+                                          status === "cursor" ||
+                                          status === "selected",
                                       },
                                     )}
                                   >
                                     {value}
-                                    {status === 'cursor' && (
+                                    {status === "cursor" && (
                                       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                                         <div className="animate-caret-blink h-4 w-px bg-foreground duration-1000" />
                                       </div>
                                     )}
                                   </div>
-                                )
+                                );
                               }}
                             />
                           </div>
@@ -186,7 +195,10 @@ export default function SignUpPage() {
                           fallback={({ resendableAfter }) => (
                             <Button variant="link" size="sm" disabled>
                               Didn&apos;t receive a code? Resend (
-                              <span className="tabular-nums">{resendableAfter}</span>)
+                              <span className="tabular-nums">
+                                {resendableAfter}
+                              </span>
+                              )
                             </Button>
                           )}
                         >
@@ -205,8 +217,8 @@ export default function SignUpPage() {
                                 return isLoading ? (
                                   <Icons.spinner className="size-4 animate-spin" />
                                 ) : (
-                                  'Continue'
-                                )
+                                  "Continue"
+                                );
                               }}
                             </Clerk.Loading>
                           </Button>
@@ -221,5 +233,5 @@ export default function SignUpPage() {
         </Clerk.Loading>
       </SignUp.Root>
     </div>
-  )
+  );
 }

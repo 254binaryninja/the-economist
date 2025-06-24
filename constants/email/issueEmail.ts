@@ -1,6 +1,12 @@
 import { IssueNotification } from "@/types";
 
-export function generateIssueEmail({ userName, issueTitle, issueDescription, actionLink, actionText }: IssueNotification): string {
+export function generateIssueEmail({
+  userName,
+  issueTitle,
+  issueDescription,
+  actionLink,
+  actionText,
+}: IssueNotification): string {
   return `
     <!DOCTYPE html>
     <html>
@@ -67,7 +73,7 @@ export function generateIssueEmail({ userName, issueTitle, issueDescription, act
             <p>${issueDescription}</p>
           </div>
           
-          ${actionLink ? `<a href="${actionLink}" class="button">${actionText || 'Take Action'}</a>` : ''}
+          ${actionLink ? `<a href="${actionLink}" class="button">${actionText || "Take Action"}</a>` : ""}
           
           <p>If you have any questions or need assistance, please contact our support team.</p>
           

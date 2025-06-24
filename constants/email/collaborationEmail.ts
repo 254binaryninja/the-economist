@@ -1,6 +1,11 @@
 import { CollaborationInvite } from "@/types";
 
-export function generateCollaborationEmail({ userName, inviterName, canvasName, canvasLink }: CollaborationInvite): string {
+export function generateCollaborationEmail({
+  userName,
+  inviterName,
+  canvasName,
+  canvasLink,
+}: CollaborationInvite): string {
   return `
     <!DOCTYPE html>
     <html>

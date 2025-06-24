@@ -22,7 +22,7 @@ function ThemeToggle() {
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
-  
+
   return (
     <Button
       variant="outline"
@@ -30,7 +30,11 @@ function ThemeToggle() {
       onClick={toggleTheme}
       className="z-50"
     >
-      {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {theme === "dark" ? (
+        <Sun className="h-4 w-4" />
+      ) : (
+        <Moon className="h-4 w-4" />
+      )}
     </Button>
   );
 }

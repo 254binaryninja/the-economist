@@ -29,7 +29,7 @@ export interface IPineconeVaultRepository {
    */
   upsertChunks(
     namespace: string,
-    chunks: Array<{ embedding: number[]; metadata: VectorMetadata }>
+    chunks: Array<{ embedding: number[]; metadata: VectorMetadata }>,
   ): Promise<string[]>;
 
   /**
@@ -45,7 +45,7 @@ export interface IPineconeVaultRepository {
     namespace: string,
     embedding: number[],
     topK?: number,
-    filter?: Record<string, any>
+    filter?: Record<string, any>,
   ): Promise<QueryResult[]>;
 
   /**

@@ -1,6 +1,9 @@
 import { WelcomeUser } from "@/types";
 
-export function generateWelcomeEmail({ userName, dashboardLink }: WelcomeUser): string {
+export function generateWelcomeEmail({
+  userName,
+  dashboardLink,
+}: WelcomeUser): string {
   return `
     <!DOCTYPE html>
     <html>

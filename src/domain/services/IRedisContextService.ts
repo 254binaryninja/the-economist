@@ -1,16 +1,18 @@
-import { injectable } from 'inversify';
-import { ChatMessage, IRedisContext } from '../repository/IRedisContextRepository';
-import { createClient, RedisClientType } from 'redis';
+import { injectable } from "inversify";
+import {
+  ChatMessage,
+  IRedisContext,
+} from "../repository/IRedisContextRepository";
+import { createClient, RedisClientType } from "redis";
 
 @injectable()
 export class RedisContextService implements IRedisContext {
-
   private client: RedisClientType;
   private TTL = 60 * 30; // seconds (30 min)
 
   constructor() {
     this.client = createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
+      url: process.env.REDIS_URL || "redis://localhost:6379",
     });
     this.client.connect();
   }
@@ -27,13 +29,13 @@ export class RedisContextService implements IRedisContext {
     try {
       return JSON.parse(data) as ChatMessage[];
     } catch (e) {
-      console.error('Failed to JSON.parse Redis data for key', key, e);
+      console.error("Failed to JSON.parse Redis data for key", key, e);
       return [];
     }
   }
 
   async push(workspaceId: string, message: ChatMessage): Promise<void> {
-   const key = this.key(workspaceId);
+    const key = this.key(workspaceId);
     const msgs = await this.get(workspaceId);
     msgs.push(message);
     if (msgs.length > 50) msgs.shift(); // keep last 50
@@ -42,6 +44,6 @@ export class RedisContextService implements IRedisContext {
   }
 
   async reset(workspaceId: string): Promise<void> {
-   await this.client.del(this.key(workspaceId));
+    await this.client.del(this.key(workspaceId));
   }
 }

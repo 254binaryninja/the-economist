@@ -40,26 +40,80 @@ const clientContainer = new Container();
 
 // ============ CLIENT-SAFE BINDINGS ONLY ============
 // Service bindings (Repository implementations) - Client Safe
-clientContainer.bind<IUserRepository>(TYPES.IUserRepository).to(UserService).inSingletonScope();
-clientContainer.bind<IVaultRepository>(TYPES.IVaultRepository).to(VaultService).inSingletonScope();
-clientContainer.bind<IVaultDocumentRepository>(TYPES.IVaultDocumentRepository).to(IVaultDocumentService).inSingletonScope();
-clientContainer.bind<IVaultWorkflowRepository>(TYPES.IVaultWorkflowRepository).to(IVaultWorkflowService).inSingletonScope();
-clientContainer.bind<IVaultDocumentChunkRepository>(TYPES.IVaultDocumentChunkRepository).to(IVaultDocumentChunkService).inSingletonScope();
-clientContainer.bind<IVaultMessagesRepository>(TYPES.IVaultMessagesRepository).to(VaultMessagesService).inSingletonScope();
-clientContainer.bind<IWorkspaceRepository>(TYPES.IWorkspaceRepository).to(WorkspaceService).inSingletonScope();
-clientContainer.bind<IWorkspaceMessagesRepository>(TYPES.IWorkspaceMessagesRepository).to(WorkspaceMessagesService).inSingletonScope();
-clientContainer.bind<IEconomicNewsFeedRepository>(TYPES.IEconomicsNewsFeedRepository).to(IEconomicNewsFeedService).inSingletonScope();
+clientContainer
+  .bind<IUserRepository>(TYPES.IUserRepository)
+  .to(UserService)
+  .inSingletonScope();
+clientContainer
+  .bind<IVaultRepository>(TYPES.IVaultRepository)
+  .to(VaultService)
+  .inSingletonScope();
+clientContainer
+  .bind<IVaultDocumentRepository>(TYPES.IVaultDocumentRepository)
+  .to(IVaultDocumentService)
+  .inSingletonScope();
+clientContainer
+  .bind<IVaultWorkflowRepository>(TYPES.IVaultWorkflowRepository)
+  .to(IVaultWorkflowService)
+  .inSingletonScope();
+clientContainer
+  .bind<IVaultDocumentChunkRepository>(TYPES.IVaultDocumentChunkRepository)
+  .to(IVaultDocumentChunkService)
+  .inSingletonScope();
+clientContainer
+  .bind<IVaultMessagesRepository>(TYPES.IVaultMessagesRepository)
+  .to(VaultMessagesService)
+  .inSingletonScope();
+clientContainer
+  .bind<IWorkspaceRepository>(TYPES.IWorkspaceRepository)
+  .to(WorkspaceService)
+  .inSingletonScope();
+clientContainer
+  .bind<IWorkspaceMessagesRepository>(TYPES.IWorkspaceMessagesRepository)
+  .to(WorkspaceMessagesService)
+  .inSingletonScope();
+clientContainer
+  .bind<IEconomicNewsFeedRepository>(TYPES.IEconomicsNewsFeedRepository)
+  .to(IEconomicNewsFeedService)
+  .inSingletonScope();
 
 // Controller bindings - Client Safe
-clientContainer.bind<UserController>(TYPES.UserController).to(UserController).inSingletonScope();
-clientContainer.bind<VaultController>(TYPES.VaultController).to(VaultController).inSingletonScope();
-clientContainer.bind<VaultDocumentController>(TYPES.VaultDocumentController).to(VaultDocumentController).inSingletonScope();
-clientContainer.bind<VaultWorkflowController>(TYPES.VaultWorkflowController).to(VaultWorkflowController).inSingletonScope();
-clientContainer.bind<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController).to(VaultDocumentChunkController).inSingletonScope();
-clientContainer.bind<VaultMessagesController>(TYPES.VaultMessagesController).to(VaultMessagesController).inSingletonScope();
-clientContainer.bind<WorkspaceController>(TYPES.WorkspaceController).to(WorkspaceController).inSingletonScope();
-clientContainer.bind<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController).to(WorkspaceMessagesController).inSingletonScope();
-clientContainer.bind<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController).to(EconomicNewsFeedController).inSingletonScope();
+clientContainer
+  .bind<UserController>(TYPES.UserController)
+  .to(UserController)
+  .inSingletonScope();
+clientContainer
+  .bind<VaultController>(TYPES.VaultController)
+  .to(VaultController)
+  .inSingletonScope();
+clientContainer
+  .bind<VaultDocumentController>(TYPES.VaultDocumentController)
+  .to(VaultDocumentController)
+  .inSingletonScope();
+clientContainer
+  .bind<VaultWorkflowController>(TYPES.VaultWorkflowController)
+  .to(VaultWorkflowController)
+  .inSingletonScope();
+clientContainer
+  .bind<VaultDocumentChunkController>(TYPES.VaultDocumentChunkController)
+  .to(VaultDocumentChunkController)
+  .inSingletonScope();
+clientContainer
+  .bind<VaultMessagesController>(TYPES.VaultMessagesController)
+  .to(VaultMessagesController)
+  .inSingletonScope();
+clientContainer
+  .bind<WorkspaceController>(TYPES.WorkspaceController)
+  .to(WorkspaceController)
+  .inSingletonScope();
+clientContainer
+  .bind<WorkspaceMessagesController>(TYPES.WorkspaceMessagesController)
+  .to(WorkspaceMessagesController)
+  .inSingletonScope();
+clientContainer
+  .bind<EconomicNewsFeedController>(TYPES.EconomicsNewsFeedController)
+  .to(EconomicNewsFeedController)
+  .inSingletonScope();
 
 // NOTE: NO server-side dependencies (Redis, Pinecone) are included here
 

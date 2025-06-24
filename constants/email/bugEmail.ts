@@ -1,8 +1,11 @@
 import { BugReport } from "@/types";
 
-
-export function generateBugReportEmail({ userName, briefDescription, completeDescription }: BugReport): string {
-    return `
+export function generateBugReportEmail({
+  userName,
+  briefDescription,
+  completeDescription,
+}: BugReport): string {
+  return `
       <!DOCTYPE html>
       <html>
         <head>
@@ -61,4 +64,4 @@ export function generateBugReportEmail({ userName, briefDescription, completeDes
         </body>
       </html>
     `;
-  }
+}

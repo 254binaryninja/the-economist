@@ -1,15 +1,13 @@
-
-
 export type DocumentMetadata = {
   documentName: string;
-  documentType: 'pdf' | 'docx' | 'xlsx' | 'txt' | 'csv' | 'url';
-  documentSummary:string
-}
+  documentType: "pdf" | "docx" | "xlsx" | "txt" | "csv" | "url";
+  documentSummary: string;
+};
 
 export type DocumentMetadataGenerator = {
-  text:string;
-  type:'pdf' | 'docx' | 'xlsx' | 'txt' | 'csv' | 'url';
-}
+  text: string;
+  type: "pdf" | "docx" | "xlsx" | "txt" | "csv" | "url";
+};
 
 export interface TextChunkEmbedding {
   content: string;
@@ -35,12 +33,13 @@ export interface ITextEmbeddingRepository {
   /**
    * Generates a Document object from the text,
    *  including metadata like name, type, and summary.
-  * @param text - The extracted text
-  * @param type - the document type
-  * @returns Document object
-  */
-  generateDocumentMetadata(document:DocumentMetadataGenerator):Promise<DocumentMetadata>
-
+   * @param text - The extracted text
+   * @param type - the document type
+   * @returns Document object
+   */
+  generateDocumentMetadata(
+    document: DocumentMetadataGenerator,
+  ): Promise<DocumentMetadata>;
 
   /**
    * Generates an embedding vector from a given text.

@@ -2,10 +2,10 @@ export interface Article {
   title: string;
   description?: string;
   url: string;
-  date: string;         // ISO string
-  source: string;       // e.g. domain or provider name
-  imageUrl?: string;    // optional image URL
-  sentiment?: number;   // Marketaux provides sentiment
+  date: string; // ISO string
+  source: string; // e.g. domain or provider name
+  imageUrl?: string; // optional image URL
+  sentiment?: number; // Marketaux provides sentiment
 }
 
 export interface DualNewsResponse {

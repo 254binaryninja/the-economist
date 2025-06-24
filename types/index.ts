@@ -1,12 +1,12 @@
 export interface BugReport {
-    type:'bug'
-    userName: string;
-    briefDescription: string;
-    completeDescription: string;
+  type: "bug";
+  userName: string;
+  briefDescription: string;
+  completeDescription: string;
 }
 
 // AI SDK types
-import type { Message } from 'ai';
+import type { Message } from "ai";
 
 export type ChatMessage = Message;
 
@@ -29,12 +29,12 @@ export interface GroundingInfo {
   searchQueries: string[];
 }
 
-import type { ToolInvocation as ExternalToolInvocation } from '@ai-sdk/ui-utils';
+import type { ToolInvocation as ExternalToolInvocation } from "@ai-sdk/ui-utils";
 
 export interface ExtendedMessage extends Message {
   experimental_attachments?: ChatAttachment[];
   toolInvocations?: ExternalToolInvocation[];
   grounding?: GroundingInfo;
-  isUpvoted?:boolean | null;
+  isUpvoted?: boolean | null;
   metadata?: any; // Add metadata field for storing tool results and other data
 }

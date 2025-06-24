@@ -7,6 +7,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 ## 🚀 Features
 
 ### ✅ Currently Available
+
 - **Multi-Perspective Economic Analysis**: Switch between different economic schools of thought (Keynesian, Classical, Marxist, etc.)
 - **Workspace Management**: Create and manage multiple economic research workspaces
 - **Vault System**: Document storage and management with semantic search capabilities
@@ -17,6 +18,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 - **Redis Context Management**: Conversation context caching
 
 ### 🔧 In Development
+
 - **AI Tool Calling System**: Enhanced economic indicator fetching and analysis
 - **Economic Indicators**: Integration with Trading Economics API (currently being fixed)
 - **Stock Market Data**: Polygon.io integration for real-time market data
@@ -24,6 +26,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 - **Advanced Analytics**: Enhanced data processing and visualization
 
 ### 📋 Planned Features
+
 - **Portfolio Analysis**: Investment portfolio tracking and analysis
 - **Economic Forecasting**: AI-powered economic predictions
 - **Custom Indicators**: User-defined economic metrics
@@ -34,6 +37,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **Framework**: Next.js 15 with App Router
 - **Styling**: Tailwind CSS
 - **UI Components**: Radix UI primitives
@@ -42,6 +46,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 - **Forms**: React Hook Form with Zod validation
 
 ### Backend
+
 - **Runtime**: Node.js
 - **Database**: PostgreSQL (Supabase)
 - **ORM**: Drizzle ORM
@@ -51,6 +56,7 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 - **Dependency Injection**: Inversify
 
 ### APIs & External Services
+
 - **Trading Economics**: Economic indicators (⚠️ integration being fixed)
 - **Marketaux**: Financial news
 - **Finnhub**: Market news
@@ -61,12 +67,14 @@ An AI-powered economic analysis platform that provides comprehensive market insi
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
+
+- Node.js 18+
 - pnpm (recommended) or npm
 - PostgreSQL database (or Supabase account)
 - Redis instance
 
 ### Environment Variables
+
 Create a `.env.local` file with the following variables:
 
 ```bash
@@ -103,30 +111,34 @@ EMAIL_PASSWORD=your_email_password
 ### Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/254binaryninja/the-economist.git
 cd the-economist
 ```
 
 2. **Install dependencies**
+
 ```bash
 pnpm install
 
 ```
 
 3. **Set up the database**
+
 ```bash
 pnpm run generate
 pnpm run migrate
 ```
 
 4. **Start the development server**
+
 ```bash
 pnpm run dev
 ```
 
 5. **Open your browser**
-Navigate to [http://localhost:3000](http://localhost:3000)
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📁 Project Structure
 
@@ -155,7 +167,6 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 └── types/               # TypeScript type definitions
 ```
 
-
 ## 🤝 Contributing
 
 **We welcome contributions!** This project is open-source and we'd love your help in making it better.
@@ -183,11 +194,13 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ### Areas Where We Need Help
 
 #### 🔧 Current Issues to Fix
+
 - **Trading Economics API Integration**: Fix authentication and data fetching
 - **AI Tool Calling System**: Improve reliability and error handling
 - **Chart Data Processing**: Enhance data transformation for visualizations
 
 #### 🆕 New Features to Implement
+
 - **Polygon.io Integration**: Add stock market data fetching
 - **Automated Newsletter System**: Create scheduled economic reports
 - **Advanced Economic Indicators**: Add more data sources and metrics
@@ -195,9 +208,11 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - **Mobile Responsiveness**: Improve mobile user experience
 
 #### 🎨 UI/UX Improvements
+
 - **Accessibility**: Improve ARIA labels and keyboard navigation
 
 #### 📚 Documentation
+
 - **API Documentation**: Document all API endpoints
 - **Component Documentation**: Add Storybook or similar
 - **User Guide**: Create comprehensive user documentation
@@ -223,6 +238,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 📊 Current Status & Roadmap
 
 ### Phase 1: Foundation (Current)
+
 - [x] Basic project setup
 - [x] Authentication system
 - [x] Database schema
@@ -233,6 +249,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - [ ] Complete economic indicators integration
 
 ### Phase 2: Core Features (Next)
+
 - [ ] Polygon.io stock market integration
 - [ ] Automated newsletter system
 - [ ] Enhanced AI analysis
@@ -240,6 +257,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - [ ] Advanced charting capabilities
 
 ### Phase 3: Advanced Features (Future)
+
 - [ ] Portfolio management
 - [ ] Economic forecasting
 - [ ] Custom indicators

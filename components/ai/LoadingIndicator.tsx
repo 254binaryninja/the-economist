@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Bot,PenLine } from 'lucide-react';
-import { Skeleton } from '../ui/skeleton';
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Bot, PenLine } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 export function LoadingIndicator() {
   return (
@@ -33,7 +33,7 @@ export function LoadingIndicator() {
             </div>
             <span className="text-sm text-muted-foreground">Thinking...</span>
           </div>
-          
+
           {/* Multiple skeleton lines to simulate response */}
           <Skeleton className="h-4 w-full" />
           <Skeleton className="h-4 w-4/5" />

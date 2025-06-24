@@ -1,27 +1,27 @@
 "use client";
 
-import { 
-  ChartContainer, 
-  ChartTooltip, 
-  ChartTooltipContent, 
-  ChartLegend, 
-  ChartLegendContent, 
-  type ChartConfig 
+import {
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+  type ChartConfig,
 } from "@/components/ui/chart";
 import {
-  BarChart, 
-  Bar, 
-  LineChart, 
+  BarChart,
+  Bar,
+  LineChart,
   Line,
-  AreaChart, 
-  Area, 
-  PieChart, 
-  Pie, 
-  Cell, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  ResponsiveContainer 
+  AreaChart,
+  Area,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
 } from "recharts";
 
 interface ChartProps {
@@ -39,7 +39,8 @@ export function AgentChart({ chart }: ChartProps) {
   // Generate chart config based on the data keys
   const chartConfig: ChartConfig = {
     [yKey]: {
-      label: yKey.charAt(0).toUpperCase() + yKey.slice(1).replace(/([A-Z])/g, ' $1'),
+      label:
+        yKey.charAt(0).toUpperCase() + yKey.slice(1).replace(/([A-Z])/g, " $1"),
       color: "hsl(var(--chart-1))",
     },
   };
@@ -47,7 +48,8 @@ export function AgentChart({ chart }: ChartProps) {
   // For pie charts, we might want to use the xKey as the label
   if (type === "pie") {
     chartConfig[xKey] = {
-      label: xKey.charAt(0).toUpperCase() + xKey.slice(1).replace(/([A-Z])/g, ' $1'),
+      label:
+        xKey.charAt(0).toUpperCase() + xKey.slice(1).replace(/([A-Z])/g, " $1"),
       color: "hsl(var(--chart-2))",
     };
   }
@@ -62,9 +64,10 @@ export function AgentChart({ chart }: ChartProps) {
   ];
 
   // Ensure data is properly formatted
-  const formattedData = data.map(item => ({
+  const formattedData = data.map((item) => ({
     ...item,
-    [yKey]: typeof item[yKey] === 'string' ? parseFloat(item[yKey]) || 0 : item[yKey]
+    [yKey]:
+      typeof item[yKey] === "string" ? parseFloat(item[yKey]) || 0 : item[yKey],
   }));
 
   if (!data || data.length === 0) {
@@ -87,18 +90,14 @@ export function AgentChart({ chart }: ChartProps) {
             tickMargin={10}
             axisLine={false}
           />
-          <YAxis
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-          />
+          <YAxis tickLine={false} axisLine={false} tickMargin={8} />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
           />
-          <Bar 
-            dataKey={yKey} 
-            fill={chartConfig[yKey]?.color || "hsl(var(--chart-1))"} 
+          <Bar
+            dataKey={yKey}
+            fill={chartConfig[yKey]?.color || "hsl(var(--chart-1))"}
             radius={8}
           />
         </BarChart>
@@ -113,11 +112,7 @@ export function AgentChart({ chart }: ChartProps) {
             axisLine={false}
             tickMargin={8}
           />
-          <YAxis
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-          />
+          <YAxis tickLine={false} axisLine={false} tickMargin={8} />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
@@ -146,11 +141,7 @@ export function AgentChart({ chart }: ChartProps) {
             axisLine={false}
             tickMargin={8}
           />
-          <YAxis
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-          />
+          <YAxis tickLine={false} axisLine={false} tickMargin={8} />
           <ChartTooltip
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
@@ -180,12 +171,14 @@ export function AgentChart({ chart }: ChartProps) {
             cy="50%"
             outerRadius={80}
             fill="#8884d8"
-            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+            label={({ name, percent }) =>
+              `${name} ${(percent * 100).toFixed(0)}%`
+            }
           >
             {formattedData.map((entry, index) => (
-              <Cell 
-                key={`cell-${index}`} 
-                fill={pieColors[index % pieColors.length]} 
+              <Cell
+                key={`cell-${index}`}
+                fill={pieColors[index % pieColors.length]}
               />
             ))}
           </Pie>
