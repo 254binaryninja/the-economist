@@ -23,7 +23,9 @@ export class WorkspaceMessagesService implements IWorkspaceMessagesRepository {
         const { data, error } = await supabaseWithAuth
             .from('workspace_messages')
             .select('*')
-            .eq('workspace_id', workspaceId);
+            .eq('workspace_id', workspaceId)
+            .order('created_at', { ascending: true })
+            ;
 
         if (error) {
             console.error("Error fetching messages by workspace ID:", error);
