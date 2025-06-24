@@ -25,14 +25,14 @@ export default function AppSidebar() {
     return (
         <Sidebar className="transition-all duration-300 ease-in-out">
             <SidebarHeader>
-                <div className="p-4 border-b hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200">
+                <div className="p-4 border-b transition-colors duration-200">
                     <div className="flex items-center gap-2 group">
                         <div className="transform group-hover:scale-105 transition-transform duration-200">
                             <Image
                                 src="/images/logo.png"
                                 alt="The Economist logo"
-                                width={50}
-                                height={50}
+                                width={100}
+                                height={100}
                             />
                         </div>
                         <span className="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-amber-600 dark:group-hover:text-amber-400 transition-colors duration-200">
@@ -54,7 +54,7 @@ export default function AppSidebar() {
                                 <SidebarMenuItem>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <SidebarMenuButton className="w-full flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+                                            <SidebarMenuButton className="w-full flex items-center gap-2 ">
                                                 <Bug className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                                                 <span>Report a Bug</span>
                                             </SidebarMenuButton>
@@ -65,7 +65,7 @@ export default function AppSidebar() {
 
                                 <SidebarMenuItem>
                                     <SidebarMenuButton
-                                        className="w-full flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                                        className="w-full flex items-center gap-2 "
                                         onClick={handleDiscordJoin}
                                     >
                                         <MessageSquare className="h-4 w-4 text-gray-500 dark:text-gray-400" />
@@ -76,7 +76,7 @@ export default function AppSidebar() {
                                 <SidebarMenuItem>
                                     <Dialog>
                                         <DialogTrigger asChild>
-                                            <SidebarMenuButton className="w-full flex items-center gap-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+                                            <SidebarMenuButton className="w-full flex items-center gap-2">
                                                 <Settings className="h-4 w-4 text-gray-500 dark:text-gray-400" />
                                                 <span>Settings</span>
                                             </SidebarMenuButton>

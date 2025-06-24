@@ -27,13 +27,13 @@ import ErrorState from "@/components/common/ErrorState";
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default function Workspaces () {
-  const { workspaces, loading, error, editingWorkspace,newWorkspaceName, setNewWorkspaceName, setEditingWorkspace, createWorkspace, fetchWorkspaces, deleteWorkspace, editWorkspace} = useWorkspace();
+  const { workspaces, loading, error, editingWorkspace,newWorkspaceName, setNewWorkspaceName, setEditingWorkspace, createWorkspace, fetchWorkspaces, deleteWorkspace, editWorkspace } = useWorkspace();
   const router = useRouter()
 
   // Fetch workspace on mount
   useEffect(() => {
     fetchWorkspaces()
-  }, []);
+  },[]);
 
   if (error) {
     return (
@@ -49,13 +49,15 @@ export default function Workspaces () {
   }
 
   const handleNavigateToWorkspace = useCallback((id:string)=>{
-    router.push(`/workspace/${id}`)
+    router.push(`/workspace/${id}`,{
+
+    })
   },[router])
 
   return (
     <div>
      <div className="flex items-center justify-between px-4">
-       <SidebarGroupLabel className="text-sm font-medium text-gray-500 dark:text-gray-400">Spaces</SidebarGroupLabel>
+       <SidebarGroupLabel className="text-sm font-medium text-gray-500 dark:text-gray-400">WorkSpaces</SidebarGroupLabel>
        <Button
            variant="ghost"
            size="sm"
@@ -79,7 +81,7 @@ export default function Workspaces () {
               {workspaces.map((workspace,i) => (
                   <SidebarMenuItem key={i}>
                     <SidebarMenuButton asChild>
-                      <div onClick={() => handleNavigateToWorkspace(workspace.id)} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+                      <div onClick={() => handleNavigateToWorkspace(workspace.id)} className="">
                         <span className="group-hover:translate-x-1 transition-transform duration-200">{workspace.title}</span>
                       </div>
                     </SidebarMenuButton>

@@ -50,7 +50,7 @@ export default function Vaults() {
     return (
         <div>
             <div className="flex items-center justify-between px-4">
-                <SidebarGroupLabel className="text-sm font-medium text-gray-500 dark:text-gray-400">Spaces</SidebarGroupLabel>
+                <SidebarGroupLabel className="text-sm font-medium text-gray-500 dark:text-gray-400">Vaults</SidebarGroupLabel>
                 <Button
                     variant="ghost"
                     size="sm"
@@ -74,7 +74,7 @@ export default function Vaults() {
                         {vaults.map((vault,i) => (
                             <SidebarMenuItem key={i}>
                                 <SidebarMenuButton asChild>
-                                    <div onClick={() => handleNavigationToVault(vault.id)} className="hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200">
+                                    <div onClick={() => handleNavigationToVault(vault.id)} className="">
                                         <span className="group-hover:translate-x-1 transition-transform duration-200">{vault.title}</span>
                                     </div>
                                 </SidebarMenuButton>
