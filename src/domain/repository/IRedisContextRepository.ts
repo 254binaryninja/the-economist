@@ -3,6 +3,15 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: string;
+  grounding?: {
+    groundingChunks: {
+      web?: {
+        uri: string;
+        title: string;
+      }
+    }[];
+    searchQueries?: string[];
+  };
 }
 
 export interface IRedisContext {
