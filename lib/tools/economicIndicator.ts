@@ -1,13 +1,13 @@
-import { tool } from 'ai'
-import { z } from "zod"
-import axios, { AxiosError } from 'axios'
+import { tool } from 'ai';
+import { z } from "zod";
+import axios, { AxiosError } from 'axios';
 
-// Schema for economic indicator tool inputs
+// Input schema remains unchanged
 const EconomicIndicatorInputSchema = z.object({
   indicator: z.string().min(2).max(100).describe("Economic indicator name (e.g., 'GDP', 'Inflation Rate', 'Unemployment Rate')"),
   countryCode: z.string().min(2).max(3).describe("Country code (ISO 2 or 3 letter code, e.g., 'US', 'UK', 'DE')"),
   year: z.number().min(1900).max(new Date().getFullYear()).optional().describe("Year for historical data (defaults to latest available)")
-})
+});
 
 interface EconomicIndicatorData {
   Country: string;
@@ -21,78 +21,69 @@ interface EconomicIndicatorData {
 }
 
 export const economicIndicatorTool = tool({
-  description: "Fetch economic indicators from Trading Economics API. Returns historical data for specific economic indicators by country. Supports GDP, inflation, unemployment, interest rates, and many other economic metrics.",
+  description: "Fetch economic indicators from Trading Economics API. Returns historical data for specific economic indicators by country.",
   parameters: EconomicIndicatorInputSchema,
   execute: async (input) => {
+    const { indicator, countryCode, year } = EconomicIndicatorInputSchema.parse(input);
+
+    const rawKey = process.env.NEXT_PUBLIC_TRADINGECONOMICS_KEY;
+    if (!rawKey) {
+      return {
+        success: false, data: null,
+        error: {
+          message: "Trading Economics API key is not configured",
+          type: 'CONFIG_ERROR',
+          details: 'Missing NEXT_PUBLIC_TRADINGECONOMICS_KEY environment variable.',
+          fallback: 'Please configure your API key.'
+        }
+      };
+    }
+
+    // Ensure prefix
+    const key = rawKey.startsWith('guest:') || rawKey.startsWith('client:')
+      ? rawKey
+      : `guest:${rawKey}`;
+
+    const client = axios.create({ timeout: 10000 });
+
+    const params = new URLSearchParams({ f: 'json' });
+    if (year) {
+      params.set('d1', `${year}-01-01`);
+      params.set('d2', `${year}-12-31`);
+    }
+
+    const url = `https://api.tradingeconomics.com/historical/country/${countryCode}/indicator/${indicator}`;
     try {
-      const { indicator, countryCode, year } = EconomicIndicatorInputSchema.parse(input);
-      
-      if (!process.env.TRADINGECONOMICS_KEY) {
-        return {
-          success: false,
-          data: null,
-          error: {
-            message: "Trading Economics API key is not configured",
-            type: 'CONFIG_ERROR',
-            details: 'The TRADINGECONOMICS_KEY environment variable is missing or empty.',
-            fallback: 'Please configure the API key in your environment variables.'
-          }
-        };
-      }
+      console.log('📡 Requesting:', url, 'with params', params.toString());
 
-      // Create axios client with proper configuration
-      const client = axios.create({
-        timeout: 10000,
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
+      const resp = await client.get<EconomicIndicatorData[]>(url, {
+        params,
+        headers: { Authorization: key }
       });
 
-      // Build the API URL
-      const baseUrl = `https://api.tradingeconomics.com/historical/country/${countryCode}/indicator/${indicator}`;
-      const params = new URLSearchParams({
-        c: process.env.TRADINGECONOMICS_KEY
-      });
-
-      // Add year filter if provided
-      if (year) {
-        const startDate = `${year}-01-01`;
-        const endDate = `${year}-12-31`;
-        params.append('d1', startDate);
-        params.append('d2', endDate);
-      }
-
-      const url = `${baseUrl}?${params.toString()}`;
-      
-      const response = await client.get<EconomicIndicatorData[]>(url);
-      
-      if (!response.data || !Array.isArray(response.data) || response.data.length === 0) {
+      if (!Array.isArray(resp.data) || resp.data.length === 0) {
         return {
-          success: false,
-          data: null,
+          success: false, data: null,
           error: {
-            message: `No data found for indicator "${indicator}" in country "${countryCode}"${year ? ` for year ${year}` : ''}`,
+            message: `No data found for "${indicator}" in "${countryCode}"${year ? ` (year ${year})` : ''}`,
             type: 'NO_DATA',
-            details: 'The requested economic indicator data is not available for the specified parameters.',
-            fallback: 'Try using a different indicator name, country code, or year. Common indicators include: GDP, Inflation Rate, Unemployment Rate.'
+            details: 'Returned empty dataset.',
+            fallback: 'Try a different indicator, country, or year.'
           }
         };
       }
 
-      // Sort by date to get the most recent data first
-      const sortedData = response.data.sort((a, b) => 
+      const sorted = resp.data.sort((a, b) =>
         new Date(b.DateTime).getTime() - new Date(a.DateTime).getTime()
       );
 
-      // Return structured data with metadata
       return {
         success: true,
         data: {
-          indicator: indicator,
+          indicator,
           country: countryCode,
           year: year || "latest",
-          data: sortedData.map(item => ({
+          data: sorted.map(item => ({
             date: item.DateTime,
             value: item.Value,
             unit: item.Unit,
@@ -101,10 +92,10 @@ export const economicIndicatorTool = tool({
             lastUpdate: item.LastUpdate
           })),
           metadata: {
-            totalRecords: sortedData.length,
-            latestValue: sortedData[0]?.Value,
-            latestDate: sortedData[0]?.DateTime,
-            unit: sortedData[0]?.Unit,
+            totalRecords: sorted.length,
+            latestValue: sorted[0].Value,
+            latestDate: sorted[0].DateTime,
+            unit: sorted[0].Unit,
             requestedIndicator: indicator,
             requestedCountry: countryCode,
             requestedYear: year
@@ -112,60 +103,81 @@ export const economicIndicatorTool = tool({
         },
         error: null
       };
-    } catch (error) {
-      console.error("Error in economic indicator tool:", error);
-      
-      // Handle specific error types gracefully
-      if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError;
-        
-        if (axiosError.response?.status === 401) {
+
+    } catch (err: any) {
+      console.error("Error in economicIndicatorTool:", err.response?.status, err.response?.data || err.message);
+      if (axios.isAxiosError(err) && err.response) {
+        const status = err.response.status;
+        const data = err.response.data;
+
+        // Specific error handling
+        if (status === 401) {
           return {
-            success: false,
-            data: null,
+            success: false, data: null,
             error: {
-              message: "Invalid Trading Economics API key",
+              message: "Unauthorized: Invalid API key",
               type: 'AUTH_ERROR',
-              details: 'The provided API key is invalid or expired.',
-              fallback: 'Please check your TRADINGECONOMICS_KEY environment variable.'
-            }
-          };
-        } else if (axiosError.response?.status === 404) {
-          return {
-            success: false,
-            data: null,
-            error: {
-              message: `Indicator "${input.indicator}" not found for country "${input.countryCode}"`,
-              type: 'NOT_FOUND',
-              details: 'The specified indicator or country code is not recognized by the API.',
-              fallback: 'Please verify the indicator name and country code. Use standard ISO country codes (e.g., US, UK, DE).'
-            }
-          };
-        } else if (axiosError.response?.status === 429) {
-          return {
-            success: false,
-            data: null,
-            error: {
-              message: "Trading Economics API rate limit exceeded",
-              type: 'RATE_LIMIT',
-              details: 'Too many requests have been made to the API.',
-              fallback: 'Please wait a moment before making another request.'
+              details: 'Server returned 401 Unauthorized.',
+              fallback: 'Check or regenerate your API key and ensure proper prefix.'
             }
           };
         }
+        if (status === 403) {
+          return {
+            success: false, data: null,
+            error: {
+              message: "Forbidden access",
+              type: 'FORBIDDEN',
+              details: 'Server returned 403 Forbidden — check permissions.',
+              fallback: 'Ensure your key has API access rights.'
+            }
+          };
+        }
+        if (status === 404) {
+          return {
+            success: false, data: null,
+            error: {
+              message: `Indicator "${indicator}" not found for country "${countryCode}"`,
+              type: 'NOT_FOUND',
+              details: '404 Not Found.',
+              fallback: 'Verify indicator and country code.'
+            }
+          };
+        }
+        if (status === 409 || status === 429) {
+          return {
+            success: false, data: null,
+            error: {
+              message: "Rate limit exceeded",
+              type: 'RATE_LIMIT',
+              details: `Server returned ${status}.`,
+              fallback: 'Slow down your requests or try again later.'
+            }
+          };
+        }
+
+        // Show raw server message for debugging
+        return {
+          success: false, data: null,
+          error: {
+            message: `Unexpected HTTP ${status}`,
+            type: 'UNKNOWN_ERROR',
+            details: typeof data === 'string' ? data : JSON.stringify(data),
+            fallback: 'Check logs or contact Trading Economics support.'
+          }
+        };
       }
-      
-      // Generic error fallback
+
+      // Generic fallback
       return {
-        success: false,
-        data: null,
+        success: false, data: null,
         error: {
-          message: error instanceof Error ? error.message : 'Unknown error occurred',
+          message: err instanceof Error ? err.message : 'Unknown error',
           type: 'UNKNOWN_ERROR',
-          details: 'An unexpected error occurred while fetching economic indicator data.',
-          fallback: 'Please try again later or contact support if the issue persists.'
+          details: err.stack || String(err),
+          fallback: 'Try again later.'
         }
       };
     }
   }
-})
+});
