@@ -6,6 +6,7 @@ import { Workspace } from "@/src/domain/repository/IWorkspaceRepository";
 import { useSession,useAuth } from "@clerk/nextjs";
 import { toast } from 'sonner'
 import  { v4 as uuidv4 } from 'uuid';
+import { useRouter } from "next/navigation";
 
 
 export function useWorkspace() {
@@ -15,6 +16,8 @@ export function useWorkspace() {
     const { isSignedIn,isLoaded } = useAuth();
     // Initialize the workspace controller
     const workspaceController = clientContainer.get<WorkspaceController>(TYPES.WorkspaceController);
+
+    const router = useRouter();
 
     // Get the states
     const [ workspaces,setWorkspaces ] = useState<Workspace[]>([]);
@@ -73,6 +76,7 @@ export function useWorkspace() {
             }
             await workspaceController.delete(workspaceId, token);
             setWorkspaces((prev) => prev.filter((ws) => ws.id !== workspaceId));
+            router.push("/workspace/new");
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unexpected error occurred");
         } finally {
@@ -108,12 +112,10 @@ export function useWorkspace() {
             setError(err instanceof Error ? err.message : "An unexpected error occurred");
         } finally {
             setLoading(false);
-        }
-    };
+        }    };
 
-    // Create a new workspace 
-
-    const createWorkspace = async ( workspaceTitle?:string) => {
+    // Create a new workspace
+    const createWorkspace = async ( workspaceTitle?:string): Promise<string | null> => {
         setLoading(true);
         setError(null);
         try {
@@ -123,19 +125,21 @@ export function useWorkspace() {
             if (!user_id) {
                 toast.error("User ID is not available");
                 setError("User ID not available");
-                return;
+                return null;
             }
             if (!token) {
                 toast.error("Token is not available");
                 setError("Token not available");
-                return;
+                return null;
             }
 
             const title = workspaceTitle || `New Space ${workspaces.length + 1}`;
             const createdWorkspace = await workspaceController.create({id,title,user_id}, token);
             setWorkspaces((prev) => [...prev, createdWorkspace]);
+            return createdWorkspace.id; // Return the workspace ID
         } catch (err) {
             setError(err instanceof Error ? err.message : "An unexpected error occurred");
+            return null;
         } finally {
             setLoading(false);
         }
