@@ -3,7 +3,6 @@ import {
   ChatMessage,
   IRedisContext,
 } from "../repository/IRedisContextRepository";
-import { createClient, RedisClientType } from "redis";
 import Redis from 'ioredis'
 
 @injectable()
