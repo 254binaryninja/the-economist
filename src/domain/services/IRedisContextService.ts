@@ -4,17 +4,49 @@ import {
   IRedisContext,
 } from "../repository/IRedisContextRepository";
 import { createClient, RedisClientType } from "redis";
+import Redis from 'ioredis'
 
 @injectable()
 export class RedisContextService implements IRedisContext {
-  private client: RedisClientType;
+  private client: Redis;
   private TTL = 60 * 30; // seconds (30 min)
 
-  constructor() {
-    this.client = createClient({
-      url: process.env.REDIS_URL || "redis://localhost:6379",
+    constructor() {
+    // Support both URL format and individual config options
+    const redisUrl = process.env.REDIS_URL;
+    
+    this.client = redisUrl 
+      ? new Redis(redisUrl, {
+          enableReadyCheck: false,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true,
+          reconnectOnError: (err) => {
+            const targetError = "READONLY";
+            return err.message.includes(targetError);
+          },
+        })
+      : new Redis({
+          host: process.env.REDIS_HOST || "localhost",
+          port: parseInt(process.env.REDIS_PORT || "6379"),
+          password: process.env.REDIS_PASSWORD,
+          db: parseInt(process.env.REDIS_DB || "0"),
+          enableReadyCheck: false,
+          maxRetriesPerRequest: 3,
+          lazyConnect: true,
+          reconnectOnError: (err) => {
+            const targetError = "READONLY";
+            return err.message.includes(targetError);
+          },
+        });
+
+    // Handle connection events
+    this.client.on("error", (err) => {
+      console.error("Redis connection error:", err);
     });
-    this.client.connect();
+
+    this.client.on("connect", () => {
+      console.log("Connected to Redis");
+    });
   }
 
   private key(workspaceId: string) {
@@ -40,10 +72,21 @@ export class RedisContextService implements IRedisContext {
     msgs.push(message);
     if (msgs.length > 50) msgs.shift(); // keep last 50
     const serialized = JSON.stringify(msgs);
-    await this.client.setEx(key, this.TTL, serialized);
+    await this.client.setex(key, this.TTL, serialized);
   }
 
   async reset(workspaceId: string): Promise<void> {
     await this.client.del(this.key(workspaceId));
+  }
+
+  /**
+   * Gracefully disconnect from Redis
+   */
+  async disconnect(): Promise<void> {
+    try {
+      await this.client.quit();
+    } catch (error) {
+      console.error("Redis disconnect error:", error);
+    }
   }
 }
