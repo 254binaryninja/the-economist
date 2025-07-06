@@ -1,5 +1,4 @@
 //api/workspace/[id]/route.ts
-
 export const maxDuration = 60;
 
 import { generateText, streamText } from "ai";
@@ -266,5 +265,15 @@ export async function POST(
   } catch (error) {
     console.error("Error in workspace chat handler:", error);
     return new Response("Internal server error", { status: 500 });
+  }
+}
+ },
+    });
+
+    return result.toDataStreamResponse();
+
+  } catch (error) {
+    console.error('Error in workspace chat handler:', error);
+    return new Response('Internal server error', { status: 500 });
   }
 }
