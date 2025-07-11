@@ -2,8 +2,8 @@ import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
 async function cronTaskRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
 
-  // Route to manually trigger daily news
-  fastify.post('/daily-news', async (request, reply) => {
+  // Route to manually trigger daily newsletter
+  fastify.post('/daily-newsletter', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: Daily news requested')
 
