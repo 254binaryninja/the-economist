@@ -1,12 +1,12 @@
 import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
-import { container } from '../services/config/inversify.config';
-import { TYPES } from '../services/config/types';
-import { INewsAggregationService, IAIContentService } from '../services/repository/interfaces';
+import { container } from '../../../../services/config/inversify.config';
+import { TYPES } from '../../../../services/config/types';
+import { INewsAggregationService, IAIContentService } from '../../../../services/repository/interfaces';
 
 const newsRoute: FastifyPluginAsync = async (fastify) => {
   
   // Fetch and aggregate news from all sources
-  fastify.get('/news/aggregate', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.get('/aggregate', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const newsService = container.get(TYPES.NewsAggregationService) as INewsAggregationService;
       
@@ -53,7 +53,7 @@ const newsRoute: FastifyPluginAsync = async (fastify) => {
   });
 
   // Get cached news for a specific date
-  fastify.get('/news/cached/:date?', async (request: FastifyRequest<{
+  fastify.get('/cached/:date?', async (request: FastifyRequest<{
     Params: { date?: string }
   }>, reply: FastifyReply) => {
     try {
@@ -84,7 +84,7 @@ const newsRoute: FastifyPluginAsync = async (fastify) => {
   });
 
   // Get news statistics
-  fastify.get('/news/stats/:date?', async (request: FastifyRequest<{
+  fastify.get('/stats/:date?', async (request: FastifyRequest<{
     Params: { date?: string }
   }>, reply: FastifyReply) => {
     try {
@@ -117,7 +117,7 @@ const newsRoute: FastifyPluginAsync = async (fastify) => {
   });
 
   // Manual trigger for news aggregation (useful for cron jobs)
-  fastify.post('/news/refresh', async (request: FastifyRequest, reply: FastifyReply) => {
+  fastify.post('/refresh', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const newsService = container.get(TYPES.NewsAggregationService) as INewsAggregationService;
       
@@ -151,7 +151,7 @@ const newsRoute: FastifyPluginAsync = async (fastify) => {
   });
 
   // Generate daily news digest
-  fastify.get('/news/daily-digest', async (request: FastifyRequest<{
+  fastify.get('/daily-digest', async (request: FastifyRequest<{
     Querystring: { date?: string }
   }>, reply: FastifyReply) => {
     try {

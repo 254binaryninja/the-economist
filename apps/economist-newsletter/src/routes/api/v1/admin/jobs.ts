@@ -1,12 +1,12 @@
 import { FastifyInstance, FastifyPluginOptions } from 'fastify'
 
-async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
-  
-  // Route to manually trigger daily newsletter
-  fastify.post('/admin/cron/daily-newsletter', async (request, reply) => {
+async function cronTaskRoutes(fastify: FastifyInstance, options: FastifyPluginOptions) {
+
+  // Route to manually trigger daily news
+  fastify.post('/daily-news', async (request, reply) => {
     try {
-      fastify.log.info('Manual trigger: Daily newsletter requested')
-      
+      fastify.log.info('Manual trigger: Daily news requested')
+
       // Call the manual trigger function
       await fastify.cronJobs.manualTriggers.triggerDailyNewsletter()
       
@@ -27,7 +27,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to manually trigger weekly preview
-  fastify.post('/admin/cron/weekly-preview', async (request, reply) => {
+  fastify.post('/weekly-preview', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: Weekly preview requested')
       
@@ -50,7 +50,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to manually trigger weekly review
-  fastify.post('/admin/cron/weekly-review', async (request, reply) => {
+  fastify.post('/weekly-review', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: Weekly review requested')
       
@@ -73,7 +73,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to manually trigger news aggregation
-  fastify.post('/admin/cron/news-aggregation', async (request, reply) => {
+  fastify.post('/news-aggregation', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: News aggregation requested')
       
@@ -96,7 +96,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to manually trigger cache cleanup
-  fastify.post('/admin/cron/cache-cleanup', async (request, reply) => {
+  fastify.post('/cache-cleanup', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: Cache cleanup requested')
       
@@ -119,7 +119,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to get cron job status
-  fastify.get('/admin/cron/status', async (request, reply) => {
+  fastify.get('/status', async (request, reply) => {
     try {
       const cronService = fastify.cronJobs.cronService
       const jobMetrics = cronService.getJobMetrics()
@@ -176,7 +176,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to get detailed job metrics
-  fastify.get('/admin/cron/metrics', async (request, reply) => {
+  fastify.get('/metrics', async (request, reply) => {
     try {
       const cronService = fastify.cronJobs.cronService
       const metrics = cronService.getJobMetrics()
@@ -199,7 +199,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to get individual job status
-  fastify.get('/admin/cron/status/:jobName', async (request, reply) => {
+  fastify.get('/status/:jobName', async (request, reply) => {
     try {
       const { jobName } = request.params as { jobName: string }
       const cronService = fastify.cronJobs.cronService
@@ -232,7 +232,7 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 
   // Route to trigger all jobs for testing (use with caution)
-  fastify.post('/admin/cron/trigger-all', async (request, reply) => {
+  fastify.post('/trigger-all', async (request, reply) => {
     try {
       fastify.log.info('Manual trigger: All cron jobs requested (testing mode)')
       
@@ -269,4 +269,4 @@ async function cronRoutes(fastify: FastifyInstance, options: FastifyPluginOption
   })
 }
 
-export default cronRoutes
+export default cronTaskRoutes

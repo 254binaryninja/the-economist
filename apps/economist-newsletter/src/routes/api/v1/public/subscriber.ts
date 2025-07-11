@@ -1,8 +1,8 @@
 import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify';
-import { container } from '../services/config/inversify.config';
-import { TYPES } from '../services/config/types';
-import { IEmailService } from '../services/repository/interfaces';
-import { subscribeSchema, SubscribeInput, UnsubscribeInput } from '../schemas/validation.schemas';
+import { container } from '../../../../services/config/inversify.config';
+import { TYPES } from '../../../../services/config/types';
+import { IEmailService } from '../../../../services/repository/interfaces';
+import { subscribeSchema, SubscribeInput, UnsubscribeInput } from '../../../../schemas/validation.schemas';
 
 // Fastify JSON Schema for subscribe endpoint
 const subscribeJSONSchema = {
