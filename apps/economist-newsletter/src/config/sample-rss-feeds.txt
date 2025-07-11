@@ -1,0 +1,21 @@
+# Sample RSS feed URLs for economic news
+# Add these to your .env file, separated by commas
+
+# Example RSS_FEED_URLS configuration (verified working feeds):
+RSS_FEED_URLS=https://feeds.bbci.co.uk/news/business/rss.xml,https://www.cnbc.com/id/10000664/device/rss/rss.html,https://feeds.marketwatch.com/marketwatch/topstories/,https://feeds.finance.yahoo.com/rss/2.0/topstories
+
+# Verified Working Economic RSS Feeds:
+# BBC Business: https://feeds.bbci.co.uk/news/business/rss.xml
+# CNBC Economics: https://www.cnbc.com/id/10000664/device/rss/rss.html
+# MarketWatch Top Stories: https://feeds.marketwatch.com/marketwatch/topstories/
+# Yahoo Finance Top Stories: https://feeds.finance.yahoo.com/rss/2.0/topstories
+# AP Business News: https://feeds.apnews.com/rss/business
+# NPR Business: https://feeds.npr.org/1006/rss.xml
+
+# Note: Some feeds may require different URLs or may become unavailable
+# Test feeds individually before adding to production
+
+# Alternative feeds to try if the above don't work:
+# Reuters (alternative): https://www.reutersagency.com/feed/?best-topics=business-finance&post_type=best
+# Bloomberg (alternative): https://feeds.bloomberg.com/politics/news.rss
+# Financial content: https://www.thestreet.com/markets.rss
