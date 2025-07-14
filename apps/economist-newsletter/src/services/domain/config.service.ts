@@ -16,12 +16,14 @@ export class ConfigService implements IConfigService {
       const rawConfig = {
         NODE_ENV: process.env.NODE_ENV,
         PORT: process.env.PORT,
-        BREVO_API_KEY: process.env.BREVO_API_KEY,
+        RESEND_API_KEY: process.env.RESEND_API_KEY,
         GOOGLE_GENERATIVE_AI_API_KEY: process.env.GOOGLE_GENERATIVE_AI_API_KEY,
         NEWS_API_KEY:process.env.NEWS_API_KEY,
         RSS_FEED_URLS:process.env.RSS_FEED_URLS,
         JWT_SECRET: process.env.JWT_SECRET,
         DATABASE_URL: process.env.DATABASE_URL,
+        SUPABASE_URL: process.env.SUPABASE_URL,
+        SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
         REDIS_URL: process.env.REDIS_URL,
         REDIS_PASSWORD: process.env.REDIS_PASSWORD,
         REDIS_HOST: process.env.REDIS_HOST,
@@ -89,8 +91,8 @@ export class ConfigService implements IConfigService {
   }
 
   // Secure API key getters
-  public getBrevoApiKey(): string {
-    return this.config.BREVO_API_KEY;
+  public getResendApiKey(): string {
+    return this.config.RESEND_API_KEY;
   }
 
   public getGoogleGenerativeAIApiKey(): string {
@@ -118,6 +120,23 @@ export class ConfigService implements IConfigService {
       max: Number(this.config.RATE_LIMIT_MAX),
       window: Number(this.config.RATE_LIMIT_WINDOW)
     };
+  }
+
+  // Supabase configuration getters
+  public getSupabaseUrl(): string {
+    const url = this.config.SUPABASE_URL;
+    if (!url) {
+      throw new Error('SUPABASE_URL environment variable is required');
+    }
+    return url;
+  }
+
+  public getSupabaseAnonKey(): string {
+    const key = this.config.SUPABASE_ANON_KEY;
+    if (!key) {
+      throw new Error('SUPABASE_ANON_KEY environment variable is required');
+    }
+    return key;
   }
 
   public getRedisUrl(): string {
