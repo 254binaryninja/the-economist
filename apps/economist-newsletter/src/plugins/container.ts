@@ -11,11 +11,18 @@ const containerPlugin: FastifyPluginAsync = async (fastify) => {
   const serviceBindings = {
     hasConfigService: container.isBound(TYPES.ConfigService),
     hasEmailService: container.isBound(TYPES.EmailService),
+    hasEmailProviderService: container.isBound(TYPES.EmailProviderService),
+    hasNewsletterEmailService: container.isBound(TYPES.NewsletterEmailService),
+    hasSubscriptionEmailService: container.isBound(TYPES.SubscriptionEmailService),
+    hasSubscriberManagementService: container.isBound(TYPES.SubscriberManagementService),
     hasRedisService: container.isBound(TYPES.RedisService),
     hasNewsAggregationService: container.isBound(TYPES.NewsAggregationService),
     hasAIContentService: container.isBound(TYPES.AIContentService),
     hasSupabaseService: container.isBound(TYPES.SupabaseService),
-    hasStorageService: container.isBound(TYPES.StorageService)
+    hasStorageService: container.isBound(TYPES.StorageService),
+    hasArticleStorageService: container.isBound(TYPES.ArticleStorageService),
+    hasNewsletterStorageService: container.isBound(TYPES.NewsletterStorageService),
+    hasDailyNewsStorageService: container.isBound(TYPES.DailyNewsStorageService)
   }
   
   fastify.log.info('📦 Dependency Injection container registered')
