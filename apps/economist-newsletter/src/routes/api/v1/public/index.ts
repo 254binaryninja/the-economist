@@ -12,7 +12,7 @@ const publicRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> =>
   await fastify.register(newsRoutes, { prefix: '/news' })
   
   // Register subscriber routes under /subscriber
-  await fastify.register(subscriberRoutes, { prefix: '/subscriber' })
+  await fastify.register(subscriberRoutes, { prefix: '/email' })
   
   // Future public routes:
   // await fastify.register(healthRoutes, { prefix: '/health' })
@@ -25,7 +25,7 @@ const publicRoutes: FastifyPluginAsync = async (fastify, opts): Promise<void> =>
       version: '1.0.0',
       endpoints: {
         news: '/api/v1/news',
-        subscriber: '/api/v1/subscriber',
+        subscriber: '/api/v1/email',
         // health: '/api/v1/health',
         // webhooks: '/api/v1/webhooks'
       }
