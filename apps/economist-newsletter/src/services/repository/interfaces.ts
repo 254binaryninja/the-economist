@@ -33,8 +33,9 @@ export interface IAIContentService {
 // Email service interface
 export interface IEmailService {
   subscribeToNewsletter(email: string, firstName?: string, lastName?: string, listIds?: number[]): Promise<{ success: boolean; message: string }>;
-  sendNewsletter(content: NewsletterContent, recipients: string[]): Promise<{ sent: number; failed: number }>;
-  sendDailyNewsletter(content: DailyNewsContent, recipients: string[]): Promise<{ sent: number; failed: number }>;
+  unsubscribeFromNewsletter(email: string): Promise<{ success: boolean; message: string }>;
+  sendNewsletter(content: NewsletterContent, recipients?: string[]): Promise<{ sent: number; failed: number }>;
+  sendDailyNewsletter(content: DailyNewsContent, recipients?: string[]): Promise<{ sent: number; failed: number }>;
   sendWelcomeEmail(email: string, name?: string): Promise<boolean>;
   sendUnsubscribeConfirmation(email: string): Promise<boolean>;
   generateUnsubscribeLink(email: string): Promise<string>;
