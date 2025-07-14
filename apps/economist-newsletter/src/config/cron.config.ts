@@ -35,12 +35,12 @@ export const getCronConfig = () => {
     
     // In development, use more frequent schedules for testing
     schedules: env === 'development' ? {
-      // For development: run every 30 minutes for testing
-      DAILY_NEWSLETTER: '*/30 * * * *',
-      WEEKLY_PREVIEW: '*/35 * * * *',
-      WEEKLY_REVIEW: '*/40 * * * *',
-      NEWS_AGGREGATION: '*/15 * * * *', // Every 15 minutes
-      CACHE_CLEANUP: '0 */2 * * *' // Every 2 hours
+      // For development: run every few minutes for quick testing
+      DAILY_NEWSLETTER: '*/5 * * * *',    // Every 5 minutes
+      WEEKLY_PREVIEW: '*/7 * * * *',      // Every 7 minutes
+      WEEKLY_REVIEW: '*/10 * * * *',      // Every 10 minutes
+      NEWS_AGGREGATION: '*/3 * * * *',    // Every 3 minutes
+      CACHE_CLEANUP: '*/20 * * * *'       // Every 20 minutes
     } : CRON_SCHEDULES,
     
     // Timezone configuration
