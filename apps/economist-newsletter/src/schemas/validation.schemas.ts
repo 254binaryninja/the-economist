@@ -42,11 +42,11 @@ export const newsArticleSchema = z.object({
   content: z.string().min(10, 'Content too short').max(50000, 'Content too long'),
   summary: z.string().max(500, 'Summary too long').optional(),
   type: z.enum(['weekly_preview', 'weekly_review']),
-  publishDate: z.date(),
+  publishDate: z.string().datetime().transform((str) => new Date(str)),
   sources: z.array(z.object({
     title: z.string().max(200),
-    url: z.string(),
-    publishedAt: z.date(),
+    url: z.string().url(),
+    publishedAt: z.string().datetime().transform((str) => new Date(str)),
     source: z.string().max(100)
   })).max(50, 'Too many sources')
 })
@@ -64,11 +64,11 @@ export const newsletterContentSchema = z.object({
     .max(500, 'Summary too long')
     .optional(),
   type: z.enum(['weekly_preview', 'weekly_review']),
-  publishDate: z.date(),
+  publishDate: z.string().datetime().transform((str) => new Date(str)),
   sources: z.array(z.object({
     title: z.string().max(200),
-    url: z.string(),
-    publishedAt: z.date(),
+    url: z.string().url(),
+    publishedAt: z.string().datetime().transform((str) => new Date(str)),
     source: z.string().max(100)
   })).max(50, 'Too many sources')
 });
@@ -118,12 +118,14 @@ export const rateLimitSchema = z.object({
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().transform(Number).pipe(z.number().int().positive()).default('3000'),
-  BREVO_API_KEY: z.string().min(1, 'Brevo API key required'),
+  RESEND_API_KEY: z.string().min(1, 'Resend API key required'),
   GOOGLE_GENERATIVE_AI_API_KEY: z.string().min(1, 'Google Generative AI API key required'),
   NEWS_API_KEY: z.string().optional(),
   RSS_FEED_URLS: z.string().default('').transform(str => str.split(',').filter(Boolean)),
   JWT_SECRET: z.string().min(32, 'JWT secret must be at least 32 characters'),
   DATABASE_URL: z.string().url().optional(),
+  SUPABASE_URL: z.string().url().optional(),
+  SUPABASE_ANON_KEY: z.string().min(1, 'Supabase anon key required').optional(),
   REDIS_URL: z.string().url().default('redis://localhost:6379'),
   REDIS_PASSWORD: z.string().optional(),
   REDIS_HOST: z.string().default('localhost'),
