@@ -8,5 +8,6 @@ export const TYPES = {
   StorageService: Symbol.for('StorageService'),
   RateLimitService: Symbol.for('RateLimitService'),
   AuthService: Symbol.for('AuthService'),
-  MonitoringService: Symbol.for('MonitoringService')
+  MonitoringService: Symbol.for('MonitoringService'),
+  SupabaseService: Symbol.for('SupabaseService')
 };
