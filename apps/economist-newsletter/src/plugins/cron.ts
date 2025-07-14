@@ -17,8 +17,19 @@ export default fp<CronPluginOptions>(async (fastify, opts) => {
   fastify.log.info('🕐 Initializing cron jobs with configuration:', {
     environment: process.env.NODE_ENV,
     enabled: cronConfig.enabled,
-    timezone: cronConfig.timezone
+    timezone: cronConfig.timezone,
+    schedules: cronConfig.schedules
   })
+
+  if (process.env.NODE_ENV === 'development') {
+    fastify.log.info('⚡ Development mode: Using frequent schedules for testing:', {
+      dailyNewsletter: cronConfig.schedules.DAILY_NEWSLETTER,
+      weeklyPreview: cronConfig.schedules.WEEKLY_PREVIEW,
+      weeklyReview: cronConfig.schedules.WEEKLY_REVIEW,
+      newsAggregation: cronConfig.schedules.NEWS_AGGREGATION,
+      cacheCleanup: cronConfig.schedules.CACHE_CLEANUP
+    })
+  }
 
   // Ensure container is available (should be registered by container plugin)
   if (!fastify.container) {
@@ -26,7 +37,7 @@ export default fp<CronPluginOptions>(async (fastify, opts) => {
   }
 
   // Initialize the CronService
-  const cronService = new CronService(fastify, fastify.container)
+  const cronService = new CronService(fastify)
 
   // Create wrapper functions that update next run times and call the service
   const createJobWrapper = (jobName: string, serviceMethod: () => Promise<void>) => {
