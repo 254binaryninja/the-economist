@@ -63,9 +63,8 @@ export async function getDailySubscribers(fastify: FastifyInstance): Promise<str
     fastify.log.error('Failed to fetch daily newsletter subscribers:', error)
     // Fallback to placeholder emails for testing
     return [
-      'test1@example.com',
-      'test2@example.com',
-      'admin@the-economist.app'
+      'arnoldmusandu@gmail.com',
+      'otienookoth007@gmail.com'
     ]
   }
 }
