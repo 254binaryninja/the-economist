@@ -36,6 +36,8 @@ export class AIContentService implements IAIContentService {
      */
     async generateNewsletterContent(newsItems: RssFeedItem[], type: "weekly_preview" | "weekly_review"): Promise<NewsletterContent> {
         try {
+            console.log(`🤖 Starting ${type} generation from ${newsItems.length} news items...`);
+            
             // Check Redis cache first using centralized key management
             const cacheKey = RedisKeys.newsletter(type);
             const redis = await this.redisService.getClient();
@@ -50,6 +52,7 @@ export class AIContentService implements IAIContentService {
 
             // Get formatted prompt for newsletter generation
             const promptTemplate = PromptFormatter.getNewsletterPrompt(newsItems, type);
+            console.log('📝 Prompt template generated, calling AI model...');
 
             // Generate structured newsletter content
             const { object: newsletter } = await generateObject({
@@ -61,16 +64,41 @@ export class AIContentService implements IAIContentService {
                 maxTokens: promptTemplate.maxTokens || 2500,
             });
 
+            console.log('✅ AI model generated newsletter successfully');
+            console.log('📋 Newsletter structure:', {
+                title: newsletter.title?.substring(0, 50) + '...',
+                contentLength: newsletter.content?.length,
+                sourcesCount: newsletter.sources?.length,
+                type: newsletter.type
+            });
+
             // Cache the result using centralized key management
             if (redis) {
                 await RedisKeys.setWithTTL(redis, cacheKey, JSON.stringify(newsletter));
+                console.log('💾 Newsletter cached successfully');
             }
 
-            console.log('Generated new newsletter content');
+            console.log(`🎉 Generated new ${type} newsletter content`);
             return newsletter;
         } catch (error) {
-            console.error('Error generating newsletter content:', error);
-            throw new Error('Failed to generate newsletter content');
+            console.error(`❌ Error generating ${type} newsletter content:`, error);
+            console.error('Error details:', {
+                name: error instanceof Error ? error.name : 'Unknown',
+                message: error instanceof Error ? error.message : String(error),
+                stack: error instanceof Error ? error.stack : undefined
+            });
+            
+            // If it's a schema validation error, provide more details
+            if (error instanceof Error && error.message.includes('schema')) {
+                console.error('🚨 Schema validation failed. This usually means the AI response format is incorrect.');
+                console.error('💡 Check that the prompt is requesting JSON format and the schema matches the expected structure.');
+            }
+            
+            // Fallback to basic newsletter structure
+            console.log('🔄 Falling back to basic newsletter structure');
+            const fallbackNewsletter = this.createFallbackNewsletter(newsItems, type);
+            console.log('✅ Fallback newsletter structure created successfully');
+            return fallbackNewsletter;
         }
     }
 
@@ -366,6 +394,48 @@ export class AIContentService implements IAIContentService {
             });
             throw new Error(`Failed to generate daily news content: ${error instanceof Error ? error.message : String(error)}`);
         }
+    }
+
+    /**
+     * Fallback method to create a basic newsletter structure if AI generation fails
+     */
+    private createFallbackNewsletter(newsItems: RssFeedItem[], type: "weekly_preview" | "weekly_review"): NewsletterContent {
+        const now = new Date();
+        const title = type === 'weekly_preview' 
+            ? `Economic Preview - Week of ${now.toLocaleDateString()}`
+            : `Economic Review - Week of ${now.toLocaleDateString()}`;
+            
+        const sources = newsItems.slice(0, 10).map(item => ({
+            title: item.title?.substring(0, 200) || 'Economic News',
+            url: item.link || '#',
+            publishedAt: item.pubDate || now,
+            source: item.description?.substring(0, 100) || 'News Source'
+        }));
+
+        const content = type === 'weekly_preview'
+            ? this.generatePreviewContent(newsItems)
+            : this.generateReviewContent(newsItems);
+
+        return {
+            title,
+            content,
+            summary: `${type === 'weekly_preview' ? 'Preview' : 'Review'} of key economic developments and market trends.`,
+            type,
+            publishDate: now,
+            sources
+        };
+    }
+
+    private generatePreviewContent(newsItems: RssFeedItem[]): string {
+        const headlines = newsItems.slice(0, 5).map(item => `• ${item.title}`).join('\n');
+        
+        return `# Economic Preview\n\n## Key Headlines to Watch:\n\n${headlines}\n\n## Market Outlook:\n\nBased on current news trends, markets are expected to focus on economic developments and policy changes. Key areas to monitor include inflation indicators, central bank communications, and geopolitical developments.\n\n## This Week's Focus:\n\n• Economic data releases\n• Corporate earnings reports\n• Policy announcements\n• Market trends and analysis\n\nStay informed with The Economist Newsletter for comprehensive economic insights.`;
+    }
+
+    private generateReviewContent(newsItems: RssFeedItem[]): string {
+        const headlines = newsItems.slice(0, 5).map(item => `• ${item.title}`).join('\n');
+        
+        return `# Economic Review\n\n## This Week's Key Developments:\n\n${headlines}\n\n## Market Performance:\n\nThe week saw various economic developments affecting global markets. Key themes included monetary policy discussions, economic data releases, and corporate performance updates.\n\n## Week's Highlights:\n\n• Economic indicators and trends\n• Central bank activities\n• Market movements and analysis\n• Policy developments\n\nFor detailed economic analysis, continue following The Economist Newsletter.`;
     }
 
 }

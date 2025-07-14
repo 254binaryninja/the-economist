@@ -39,21 +39,37 @@ Focus on:
 - Global economic developments
 - Investment implications
 
-Format the content as a well-structured newsletter with clear sections and engaging headlines.`,
+You must respond with a structured JSON object that matches this exact schema:
+{
+  "title": "string (max 200 characters)",
+  "content": "string (main newsletter content, 10-50000 characters)",
+  "summary": "string (brief summary, max 500 characters, optional)",
+  "type": "weekly_preview",
+  "publishDate": "ISO 8601 date string",
+  "sources": [
+    {
+      "title": "string (max 200 characters)",
+      "url": "string (valid URL)",
+      "publishedAt": "ISO 8601 date string",
+      "source": "string (max 100 characters)"
+    }
+  ]
+}`,
 
-    userPrompt: `Based on the following news items, create a weekly economic preview newsletter. 
+    userPrompt: `Based on the following news items, create a weekly economic preview newsletter in the exact JSON format specified in the system prompt. 
 
 News Items:
 {newsItems}
 
-Create a newsletter with:
-1. An engaging title (max 200 characters)
-2. A brief executive summary (max 500 characters)
-3. Main content covering key economic themes and trends
-4. 3-5 key topics to watch this week
-5. Market outlook and investment implications
+Generate a JSON object with:
+1. title: An engaging weekly preview title (max 200 characters)
+2. content: Well-structured newsletter content covering key economic themes and trends for the upcoming week
+3. summary: Brief executive summary (max 500 characters)
+4. type: "weekly_preview"
+5. publishDate: Current date in ISO 8601 format
+6. sources: Array of source objects from the provided news items
 
-Keep the tone professional but engaging, suitable for business professionals and investors.`,
+Ensure the JSON is valid and matches the schema exactly.`,
 
     temperature: 0.7,
     maxTokens: 2500
@@ -77,21 +93,37 @@ Focus on:
 - Significant business developments
 - Global economic shifts
 
-Format the content as a well-structured newsletter with clear sections and compelling analysis.`,
+You must respond with a structured JSON object that matches this exact schema:
+{
+  "title": "string (max 200 characters)",
+  "content": "string (main newsletter content, 10-50000 characters)",
+  "summary": "string (brief summary, max 500 characters, optional)",
+  "type": "weekly_review",
+  "publishDate": "ISO 8601 date string",
+  "sources": [
+    {
+      "title": "string (max 200 characters)",
+      "url": "string (valid URL)",
+      "publishedAt": "ISO 8601 date string",
+      "source": "string (max 100 characters)"
+    }
+  ]
+}`,
 
-    userPrompt: `Based on the following news items from the past week, create a comprehensive weekly economic review newsletter.
+    userPrompt: `Based on the following news items from the past week, create a comprehensive weekly economic review newsletter in the exact JSON format specified in the system prompt.
 
 News Items:
 {newsItems}
 
-Create a newsletter with:
-1. An engaging title (max 200 characters)
-2. A brief executive summary (max 500 characters)
-3. Main content analyzing key economic developments
-4. Market performance summary
-5. Key takeaways and implications for the week ahead
+Generate a JSON object with:
+1. title: An engaging weekly review title (max 200 characters)
+2. content: Well-structured newsletter content analyzing key economic developments from the past week
+3. summary: Brief executive summary (max 500 characters)
+4. type: "weekly_review"
+5. publishDate: Current date in ISO 8601 format
+6. sources: Array of source objects from the provided news items
 
-Focus on the most significant economic developments and provide clear analysis of their impact.`,
+Focus on the most significant economic developments and provide clear analysis of their impact. Ensure the JSON is valid and matches the schema exactly.`,
 
     temperature: 0.6,
     maxTokens: 2500
@@ -155,23 +187,39 @@ Structure your articles with:
 - Supporting evidence and data
 - Expert analysis and interpretation
 - Implications and future outlook
-- Proper attribution to sources`,
+- Proper attribution to sources
 
-    userPrompt: `Based on the following news items, create a comprehensive economic analysis article for our blog. Transform the raw news data into an insightful piece that provides deep analysis and context.
+You must respond with a structured JSON object that matches this exact schema:
+{
+  "title": "string (max 200 characters)",
+  "content": "string (main article content, 10-50000 characters)",
+  "summary": "string (brief summary, max 500 characters, optional)",
+  "type": "weekly_preview" or "weekly_review",
+  "publishDate": "ISO 8601 date string",
+  "sources": [
+    {
+      "title": "string (max 200 characters)",
+      "url": "string (valid URL)",
+      "publishedAt": "ISO 8601 date string",
+      "source": "string (max 100 characters)"
+    }
+  ]
+}`,
+
+    userPrompt: `Based on the following news items, create a comprehensive economic analysis article in the exact JSON format specified in the system prompt.
 
 Source News Items:
 {articles}
 
-Create an article with:
-1. An attention-grabbing headline
-2. A strong lead paragraph that summarizes the key point
-3. 4-6 body paragraphs with detailed analysis
-4. Clear explanations of economic concepts
-5. Discussion of implications and future outlook
-6. A compelling conclusion
+Generate a JSON object with:
+1. title: An attention-grabbing headline (max 200 characters)
+2. content: Comprehensive article content (800-1200 words) with detailed analysis
+3. summary: Brief article summary (max 500 characters)
+4. type: "weekly_review" (since this is analysis of existing news)
+5. publishDate: Current date in ISO 8601 format
+6. sources: Array of source objects from the provided news items
 
-Target length: 800-1200 words
-Tone: Professional, analytical, accessible to business readers`,
+Ensure the JSON is valid and matches the schema exactly.`,
 
     temperature: 0.7,
     maxTokens: 1500
@@ -384,26 +432,42 @@ Focus on:
 - Key economic indicators
 - Breaking financial news
 
-Create a structured daily digest that can be consumed in 2-3 minutes.`,
+You must respond with a structured JSON object that matches this exact schema:
+{
+  "title": "string (max 200 characters)",
+  "summary": "string (max 500 characters)",
+  "topStories": [
+    {
+      "headline": "string (max 150 characters)",
+      "summary": "string (max 300 characters)",
+      "category": "string (max 50 characters)",
+      "url": "string (valid URL)"
+    }
+  ],
+  "marketHighlights": ["string (max 200 characters)"],
+  "economicIndicators": ["string (max 200 characters)"],
+  "generatedAt": "string (optional)"
+}`,
       
-      userPrompt: `Based on the following economic news items from ${dateStr}, create a daily news digest.
+      userPrompt: `Based on the following economic news items from ${dateStr}, create a daily news digest in the exact JSON format specified in the system prompt.
 
 News Items:
 ${newsItems.map(item => `
 Title: ${item.title}
 Description: ${item.description}
-URL: ${item.url}
+URL: ${item.link}
 Category: ${(item as any).category || 'general'}
 ---`).join('\n')}
 
-Create a daily digest with:
-1. A compelling title for today's digest
-2. A brief summary (2-3 sentences) of today's key economic themes
-3. Top 5 stories with headlines, summaries, categories, and URLs
-4. 3 key market highlights
-5. 3 important economic indicators or data points
+Generate a JSON object with:
+1. title: Engaging daily digest title for ${dateStr}
+2. summary: Brief overview of the day's economic news
+3. topStories: Array of 3-5 most important stories with headlines, summaries, categories, and URLs
+4. marketHighlights: Array of 2-3 key market movements or trends
+5. economicIndicators: Array of 2-3 important economic data points or indicators
+6. generatedAt: Current timestamp
 
-Ensure the content is factual, well-organized, and provides immediate value to readers.`,
+Ensure all URLs are valid and the JSON matches the schema exactly.`,
       
       temperature: 0.7,
       maxTokens: 2000
