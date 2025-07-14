@@ -40,18 +40,40 @@ export interface IEmailService {
   generateUnsubscribeLink(email: string): Promise<string>;
 }
 
-// Storage service interface
+// Storage service interface - MVP focused
 export interface IStorageService {
-  getNewsletter(id: string): Promise<NewsletterContent | null>;
-  saveNewsItems(items: RssFeedItem[]): Promise<void>;
-  getLatestNews(limit: number): Promise<RssFeedItem[]>;
-  cleanupOldData(olderThanDays: number): Promise<number>;
-  saveUserPreferences(email: string, preferences: any): Promise<void>;
-  getUserPreferences(email: string): Promise<any>;
-  saveDailyNewsContent(content: DailyNewsContent): Promise<string>;
-  saveNewsArticle(article: NewsArticle): Promise<string>; 
+  // Basic Article Management
+  saveNewsArticle(article: NewsArticle): Promise<string>;
   getNewsArticle(id: string): Promise<NewsArticle | null>;
+  getLatestNews(limit: number, offset?: number): Promise<NewsArticle[]>;
+  searchArticles(query: string, options?: { 
+    limit?: number; 
+    offset?: number; 
+  }): Promise<{ articles: NewsArticle[]; total: number }>;
+  
+  // Daily News Content (Core MVP feature)
+  saveDailyNewsContent(content: DailyNewsContent, date?: Date): Promise<string>;
   getDailyNewsContent(date?: Date): Promise<DailyNewsContent | null>;
+  
+  // Simple Newsletter Subscriptions (Anonymous signup for MVP)
+  savePublicNewsletterSignup(email: string): Promise<{ id: string; confirmationToken: string }>;
+  confirmNewsletterSignup(token: string): Promise<boolean>;
+  unsubscribeFromNewsletter(email: string): Promise<boolean>;
+  getConfirmedSubscribers(): Promise<Array<{ id: string; email: string }>>;
+  
+  // Basic Email Delivery Tracking
+  recordEmailDelivery(deliveryData: {
+    email: string;
+    trackingId: string;
+    content?: string; // Simple content reference
+  }): Promise<string>;
+  updateEmailDeliveryStatus(trackingId: string, status: 'sent' | 'delivered' | 'failed'): Promise<void>;
+  
+  // Bulk Operations for RSS processing
+  saveNewsItems(items: RssFeedItem[]): Promise<void>;
+  
+  // Basic cleanup
+  cleanupOldData(olderThanDays: number): Promise<number>;
 }
 
 // Rate limiting service interface
@@ -91,7 +113,7 @@ export interface IConfigService {
   getPort(): number;
   
   // Secure API key getters
-  getBrevoApiKey(): string;
+  getResendApiKey(): string;
   getGoogleGenerativeAIApiKey(): string;
   getJwtSecret(): string;
   getDatabaseUrl(): string | undefined;
@@ -101,6 +123,10 @@ export interface IConfigService {
   getRedisPort(): number;
   getRedisDb(): number;
   getRateLimitConfig(): { max: number; window: number };
+
+  // Supabase configuration getters
+  getSupabaseUrl(): string;
+  getSupabaseAnonKey(): string;
   
   // Email configuration getters
   getDefaultFromEmail(): string;
@@ -118,4 +144,12 @@ export interface IRedisService {
   getStats(): { isConnected: boolean; connectionCount: number; isInitialized: boolean };
   disconnect(): Promise<void>;
   reconnect(): Promise<void>;
+}
+
+// Supabase service interface for Clerk integration
+export interface ISupabaseService {
+  getClient(token?: string): any; // Returns Supabase client with optional RLS context
+  setAuthToken(token: string): void; // Set Clerk session token for RLS
+  clearAuthToken(): void; // Clear auth context
+  isAuthenticated(): boolean; // Check if user is authenticated
 }
